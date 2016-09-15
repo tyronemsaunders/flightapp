@@ -1,11 +1,11 @@
 # Dependency directories
 node_modules
-vendor
+/vendor
 bower_components
 
 # Compiled directories
-bin
-build
+/bin
+/build
 
 # Log files
 *.log
