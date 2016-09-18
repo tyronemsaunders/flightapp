@@ -36,9 +36,9 @@ var pkg = require('./package.json');
  *  Build site javascript
  *  
  */
-gulp.task('build-js', ['order-vendor-js', 'html-templates'], function() {	
+gulp.task('build-js', ['order-vendor-js', 'order-site-js', 'html-templates'], function() {	
 		
-	var vendor = gulp.src(config.src.app.js.vendor)
+	var stream = gulp.src(config.src.app.js.vendor)
 					.pipe(plumber({
 						errorHandler : function (err) {
 							console.log(err); //output errors to the console
@@ -48,17 +48,7 @@ gulp.task('build-js', ['order-vendor-js', 'html-templates'], function() {
 					.pipe(jshint()) // lint each file to ensure that it follows project conventions
 					.pipe(gulp.dest(config.dest.build.js.vendor)); //move files to build directory
 	
-	var site = gulp.src(config.src.app.js.site) //gather the javascript files from a glob pattern
-					.pipe(plumber({
-						errorHandler : function (err) {
-							console.log(err); //output errors to the console
-							this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
-						}
-					}))
-					.pipe(jshint()) // lint each file to ensure that it follows project conventions
-					.pipe(gulp.dest(config.dest.build.js.site)); //move files to build directory
-
-	return merge(vendor, site);	
+	return stream;
 });
 
 /**
@@ -135,6 +125,67 @@ gulp.task('order-vendor-js', function(callback) {
 			callback(null);
 		}
 	}	
+});
+
+/**
+ *  
+ *  Order the site javascript files based on the directory structure
+ *  
+ */
+gulp.task('order-site-js', function(callback) {
+	
+	var arr = glob.sync(config.src.app.js.site[0]);
+	var counter = 0;
+	
+	for (var i = 0; i < arr.length; i++) {
+		var dirLevel = arr[i].split('/').length + '';
+		var indexer;
+		
+		if (arr[i].indexOf('.module') > 0) {
+			indexer = '1';
+		} else if (arr[i].indexOf('.config') > 0) {
+			indexer = '2';
+		} else if (arr[i].indexOf('.run') > 0) {
+			indexer = '3';
+		} else if (arr[i].indexOf('.controller') > 0) {
+			indexer = '4';
+		} else if (arr[i].indexOf('.factory') > 0) {
+			indexer = '5';
+		} else if (arr[i].indexOf('.service') > 0) {
+			indexer = '6';
+		} else if (arr[i].indexOf('.provider') > 0) {
+			indexer = '7';
+		} else if (arr[i].indexOf('.directive') > 0) {
+			indexer = '8';
+		} else {
+			indexer = '0';
+		}
+		
+		var prefixer = dirLevel + indexer;
+		
+		var searchString = 'src/app/';
+		var pathStart = arr[i].indexOf(searchString) + searchString.length;
+		var pathEnd = arr[i].lastIndexOf('/');
+		var newPath = arr[i].substring(pathStart, pathEnd);
+		
+		
+		gulp.src(arr[i])
+			.pipe(plumber({
+				errorHandler : function (err) {
+					console.log(err); //output errors to the console
+					this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
+				}
+			}))
+			.pipe(jshint()) // lint each file to ensure that it follows project conventions
+		    .pipe(rename({
+		    	prefix : prefixer + '-'
+		    }))
+		    .pipe(gulp.dest(config.dest.build.js.site + '/' + newPath));
+		
+		if (++counter == arr.length) {
+			callback(null);
+		}
+	}
 });
 
 /**

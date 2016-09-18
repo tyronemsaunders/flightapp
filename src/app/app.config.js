@@ -4,7 +4,7 @@ angular
 
 
 //$inject is used to manually identify dependences to safeguard agains minification issues and avoid creating long list of inline dependencies
-appConfig.$inject = ['$stateProvider', 'urlRouterProvider'];
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
 function appConfig($stateProvider, $urlRouterProvider) {
 

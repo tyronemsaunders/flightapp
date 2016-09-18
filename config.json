@@ -36,10 +36,7 @@
     "app" : {
       "js" : {
         "site" : [
-          "src/app/**/*.js", 
-          "src/app/*.js", 
-          "!src/app/**/*.spec.js", 
-          "!src/app/*.spec.js"
+          "src/app/**/!(*spec).js"
         ],
         "vendor" : [
           "src/vendor/**/*.js", 
