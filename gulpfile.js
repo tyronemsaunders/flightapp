@@ -4,6 +4,7 @@
  *
  */
 var gulp = require('gulp'), //install gulp globally as well
+	vfs = require('vinyl-fs'),
 	jshint = require('gulp-jshint'), //make sure jshint is installed globally with gulp-jshint
 	templateCache = require('gulp-angular-templatecache'), // Concatenates and registers AngularJS templates in the $templateCache
     sass = require('gulp-sass'), //prefer global node-gyp installed
@@ -402,13 +403,13 @@ gulp.task('compile-styles', ['build-styles'], function() {
  */
 gulp.task('copy-vendor-styles-to-src', function() {
 	var styles = gulp.src(config.src.vendor.styles)
-						.pipe(gulp.dest('src/assets/styles/vendor'));
+						.pipe(vfs.dest('src/assets/styles/vendor', {overwrite: false}));
 	
 	var stylePartials = gulp.src(config.src.vendor.stylePartials)
-						.pipe(gulp.dest('src/assets/styles/vendor/partials'));
+						.pipe(vfs.dest('src/assets/styles/vendor/partials', {overwrite: false}));
 	
 	var fonts = gulp.src(config.src.vendor.assets.fonts)
-						.pipe(gulp.dest('src/assets/fonts'));
+						.pipe(vfs.dest('src/assets/fonts', {overwrite: false}));
 	
 	return merge(styles, stylePartials, fonts);
 });
