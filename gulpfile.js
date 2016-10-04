@@ -55,26 +55,6 @@ gulp.task('build-js', ['order-vendor-js', 'order-site-js', 'html-templates'], fu
 
 /**
  *  
- *  reBuild site javascript
- *  
- */
-gulp.task('rebuild-js', ['order-site-js', 'html-templates'], function() {	
-		
-	var stream = gulp.src(config.src.app.js.vendor)
-					.pipe(plumber({
-						errorHandler : function (err) {
-							console.log(err); //output errors to the console
-							this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
-						}
-					}))
-					.pipe(jshint()) // lint each file to ensure that it follows project conventions
-					.pipe(gulp.dest(config.dest.build.js.vendor)); //move files to build directory
-	
-	return stream;
-});
-
-/**
- *  
  *  Compile site javascript
  *  
  */
@@ -141,7 +121,7 @@ gulp.task('order-vendor-js', function(callback) {
 		    .pipe(rename({
 		    	prefix : prefixer + '-'
 		    }))
-		    .pipe(gulp.dest(destination));
+			.pipe(vfs.dest(destination, {overwrite: false}));
 		
 		if (++counter == arr.length) {
 			callback(null);
@@ -216,97 +196,7 @@ gulp.task('order-site-js', function(callback) {
  *  
  */
 gulp.task('build-styles', ['copy-vendor-styles-to-src'], function() {
-	/**
-	 * Build Vendor CSS
-	 * 1. Build include paths for scss partials 
-	 * 2. Concatenate vendor scss/css into the proper order
-	 * 3. Prefix css
-	 * 4. lint css
-	 * 5. rename file
-	 * 6. send to destination
-	 */
-	var vendorPartials = config.src.app.styles.vendorPartials;
-	var includePathArray = [];
-	var tmpArray = [];
-	
-	for (var i = 0; i < vendorPartials.length; i++) {
-		tmpArray = glob.sync(vendorPartials[i]);
-		
-		for (var j = 0; j < tmpArray.length; j++) {
-			if (tmpArray[j] && fs.lstatSync(tmpArray[j]).isDirectory()) {
-				includePathArray.push(tmpArray[j]);
-			}
-		}
-	}
-	
-	var vendor = gulp.src(config.src.app.styles.vendor)
-					.pipe(plumber({
-						errorHandler : function (err) {
-							console.log(err); //output errors to the console
-							this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
-						}
-					}))
-					.pipe(gulpConcat('styles-vendor.scss'))
-				    .pipe(sass({
-				    	includePaths : includePathArray
-				    }))
-				    .pipe(autoprefixer({
-					  browsers: ['last 2 versions'], //add CSS prefixes for last 2 browser versions
-		              cascade: false //visual cascade is extra work for not much payoff
-				    }))
-				    .pipe(csslint())
-				    //.pipe(csslint.formatter())
-				    .pipe(rename({basename: pkg.name + '-' + pkg.version + '-vendor'})) // rename file
-				    .pipe(gulp.dest(config.dest.build.css.vendor)) //move files to build directory
-					.pipe(gulp.dest(config.dest.build.css.core)); //move files to build directory
-	
-	/**
-	 * Build Site CSS
-	 * 1. Concatenate vendor scss/css into the proper order
-	 * 2. Prefix css
-	 * 3. lint css
-	 * 4. rename file
-	 * 5. send to destination
-	 */
-	var site = gulp.src(config.src.app.styles.site)
-					.pipe(plumber({
-						errorHandler : function (err) {
-							console.log(err); //output errors to the console
-							this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
-						}
-					}))
-					.pipe(gulpConcat('styles-site.scss'))
-				    .pipe(sass({
-				    	includePaths : includePathArray
-				    }))
-				    .pipe(autoprefixer({
-					  browsers: ['last 2 versions'], //add CSS prefixes for last 2 browser versions
-				      cascade: false //visual cascade is extra work for not much payoff
-				    }))
-				    .pipe(csslint())
-				    //.pipe(csslint.formatter())
-				    .pipe(rename({basename: pkg.name + '-' + pkg.version + '-site'})) // rename file
-				    .pipe(gulp.dest(config.dest.build.css.site)) //move files to build directory
-					.pipe(gulp.dest(config.dest.build.css.core)); //move files to build directory
-	
-	return merge(vendor, site);					  
-});
 
-/**
- *  
- *  Breuild Styles
- *  
- */
-gulp.task('rebuild-styles', function() {
-	/**
-	 * Build Vendor CSS
-	 * 1. Build include paths for scss partials 
-	 * 2. Concatenate vendor scss/css into the proper order
-	 * 3. Prefix css
-	 * 4. lint css
-	 * 5. rename file
-	 * 6. send to destination
-	 */
 	var vendorPartials = config.src.app.styles.vendorPartials;
 	var includePathArray = [];
 	var tmpArray = [];
@@ -337,19 +227,10 @@ gulp.task('rebuild-styles', function() {
 		              cascade: false //visual cascade is extra work for not much payoff
 				    }))
 				    .pipe(csslint())
-				    //.pipe(csslint.formatter())
 				    .pipe(rename({basename: pkg.name + '-' + pkg.version + '-vendor'})) // rename file
 				    .pipe(gulp.dest(config.dest.build.css.vendor)) //move files to build directory
 					.pipe(gulp.dest(config.dest.build.css.core)); //move files to build directory
 	
-	/**
-	 * Build Site CSS
-	 * 1. Concatenate vendor scss/css into the proper order
-	 * 2. Prefix css
-	 * 3. lint css
-	 * 4. rename file
-	 * 5. send to destination
-	 */
 	var site = gulp.src(config.src.app.styles.site)
 					.pipe(plumber({
 						errorHandler : function (err) {
@@ -366,7 +247,6 @@ gulp.task('rebuild-styles', function() {
 				      cascade: false //visual cascade is extra work for not much payoff
 				    }))
 				    .pipe(csslint())
-				    //.pipe(csslint.formatter())
 				    .pipe(rename({basename: pkg.name + '-' + pkg.version + '-site'})) // rename file
 				    .pipe(gulp.dest(config.dest.build.css.site)) //move files to build directory
 					.pipe(gulp.dest(config.dest.build.css.core)); //move files to build directory
@@ -429,20 +309,6 @@ gulp.task('build-assets', ['copy-vendor-styles-to-src'], function() {
 	return merge(media, fonts);
 });
 
-/**
- *  
- *  copy src assets to build
- *  
- */
-gulp.task('rebuild-assets', function() {
-	var media = gulp.src(config.src.app.assets.media)
-						.pipe(gulp.dest(config.dest.build.media));
-	
-	var fonts = gulp.src(config.src.app.assets.fonts)
-						.pipe(gulp.dest(config.dest.build.fonts));
-	
-	return merge(media, fonts);
-});
 
 /**
  *  
@@ -465,34 +331,6 @@ gulp.task('compile-assets', ['build-assets'], function() {
  *  
  */
 gulp.task('index:build', ['build-js', 'build-styles'], function() {	
-
-	var vendorScripts = fixPathArray(glob.sync(config.dest.build.js.vendor + '/**/*.js') || []);
-	var siteScripts = fixPathArray(glob.sync(config.dest.build.js.site + '/**/*.js') || []);
-	var scriptsArray = (vendorScripts || []).concat(siteScripts);
-
-	
-	var vendorStyles = glob.sync(config.dest.build.css.core + '/*vendor.css') || [];
-	var siteStyles = glob.sync(config.dest.build.css.core + '/*site.css') || []; 
-	var stylesArray = fixPathArray(vendorStyles).concat(fixPathArray(siteStyles));
-	
-	var stream = gulp.src('src/index.tpl.html')
-					.pipe(nunjucksRender({
-						data : {
-							scripts : scriptsArray,
-							styles : stylesArray
-						}
-					}))
-					.pipe(rename('index.html'))
-					.pipe(gulp.dest('build'));
-	return stream;
-});
-
-/**
- *  
- *  rebuild the index.html file
- *  
- */
-gulp.task('index:rebuild', function() {	
 
 	var vendorScripts = fixPathArray(glob.sync(config.dest.build.js.vendor + '/**/*.js') || []);
 	var siteScripts = fixPathArray(glob.sync(config.dest.build.js.site + '/**/*.js') || []);
@@ -581,47 +419,47 @@ gulp.task('watch', ['build'], function() {
 	var vendorStyles = glob.sync('src/assets/styles/vendor/**') || [];
 	var watchedStyles = siteStyles.concat(vendorStyles);
 	
-	gulp.watch(watchedStyles, ['rebuild-styles'], function(event) {
+	gulp.watch(watchedStyles, ['build-styles'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch javascript files
-	gulp.watch(config.src.app.js.site, ['rebuild-js'], function(event) {
+	gulp.watch(config.src.app.js.site, ['build-js'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch javascript files
-	gulp.watch(config.src.app.js.vendor, ['rebuild-js'], function(event) {
+	gulp.watch(config.src.app.js.vendor, ['build-js'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch template files
-	gulp.watch(config.src.app.templates, ['rebuild-js'], function(event) {
+	gulp.watch(config.src.app.templates, ['build-js'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch index.tpl.html
-	gulp.watch('src/index.tpl.html', ['index:rebuild'], function(event) {
+	gulp.watch('src/index.tpl.html', ['index:build'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch media assets
-	gulp.watch(config.src.app.assets.media, ['rebuild-assets'], function(event) {
+	gulp.watch(config.src.app.assets.media, ['build-assets'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch fonts
-	gulp.watch(config.src.app.assets.fonts, ['rebuild-assets'], function(event) {
+	gulp.watch(config.src.app.assets.fonts, ['build-assets'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch gulpfile
-	gulp.watch('gulpfile.js', ['rebuild-js', 'rebuild-styles', 'rebuild-assets'], function(event) {
+	gulp.watch('gulpfile.js', ['build-js', 'build-styles', 'build-assets'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch config.json
-	gulp.watch('config.json', ['rebuild-js', 'rebuild-styles', 'rebuild-assets'], function(event) {
+	gulp.watch('config.json', ['build-js', 'build-styles', 'build-assets'], function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 });
