@@ -1,6 +1,6 @@
 {
   "name": "ngsassfoundation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A boilerplate for building AngularJS apps using Foundation 6 and Sass",
   "main": "app.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "jshint": "^2.9.3",
+    "map-stream": "0.0.6",
     "merge-stream": "^1.0.0",
     "streamqueue": "^1.1.1",
     "vinyl-fs": "^2.4.3"
