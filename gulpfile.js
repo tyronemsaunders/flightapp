@@ -3,7 +3,7 @@
  *  Get the gulp packages
  *
  */
-var gulp = require('gulp'), //install gulp globally as well
+var gulp = require('gulp'), //be sure to install gulp globally as well
 	vfs = require('vinyl-fs'),
 	jshint = require('gulp-jshint'), //make sure jshint is installed globally with gulp-jshint
 	templateCache = require('gulp-angular-templatecache'), // Concatenates and registers AngularJS templates in the $templateCache
@@ -19,6 +19,7 @@ var gulp = require('gulp'), //install gulp globally as well
     plumber = require('gulp-plumber'),
     gutil = require('gulp-util'),
     merge = require('merge-stream'),
+    map = require('map-stream'),
     nunjucksRender = require('gulp-nunjucks-render'),
     del = require('del'),
     glob = require('glob'),
@@ -33,6 +34,11 @@ var gulp = require('gulp'), //install gulp globally as well
 var config = require('./config.json');
 var pkg = require('./package.json');
 
+var log = function(file, cb) {
+	  console.log(file.path);
+	  cb(null, file);
+	};
+	
 /**
  *  
  *  Build site javascript
@@ -197,20 +203,8 @@ gulp.task('order-site-js', function(callback) {
  */
 gulp.task('build-styles', ['copy-vendor-styles-to-src'], function() {
 
-	var vendorPartials = config.src.app.styles.vendorPartials;
-	var includePathArray = [];
-	var tmpArray = [];
-	
-	for (var i = 0; i < vendorPartials.length; i++) {
-		tmpArray = glob.sync(vendorPartials[i]);
-		
-		for (var j = 0; j < tmpArray.length; j++) {
-			if (tmpArray[j] && fs.lstatSync(tmpArray[j]).isDirectory()) {
-				includePathArray.push(tmpArray[j]);
-			}
-		}
-	}
-	
+	var includePathArray = partialFileIncludePaths(config.src.app.styles.vendorPartials);
+
 	var vendor = gulp.src(config.src.app.styles.vendor)
 					.pipe(plumber({
 						errorHandler : function (err) {
@@ -251,7 +245,8 @@ gulp.task('build-styles', ['copy-vendor-styles-to-src'], function() {
 				    .pipe(gulp.dest(config.dest.build.css.site)) //move files to build directory
 					.pipe(gulp.dest(config.dest.build.css.core)); //move files to build directory
 	
-	return merge(vendor, site);					  
+	return merge(vendor, site);		
+		  
 });
 
 /**
@@ -282,6 +277,7 @@ gulp.task('compile-styles', ['build-styles'], function() {
  *  
  */
 gulp.task('copy-vendor-styles-to-src', function() {
+	
 	var styles = gulp.src(config.src.vendor.styles)
 						.pipe(vfs.dest('src/assets/styles/vendor', {overwrite: false}));
 	
@@ -443,7 +439,6 @@ gulp.task('watch', ['build'], function() {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 
-	
 	//watch media assets
 	gulp.watch(config.src.app.assets.media, ['build-assets']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
@@ -526,4 +521,24 @@ function charPadding(num, width, char) {
 		}
 		return num
 	}
+}
+
+/**
+ *  Function to create an array of paths out of file path glob array
+ */
+function partialFileIncludePaths(partialFileGlobArray) {
+	var includeArray = [];
+	var tmpArray = [];
+	
+	for (var i = 0; i < partialFileGlobArray.length; i++) {
+		tmpArray = glob.sync(partialFileGlobArray[i]);
+		
+		for (var j = 0; j < tmpArray.length; j++) {
+			if (tmpArray[j] && fs.lstatSync(tmpArray[j]).isDirectory()) {
+				includeArray.push(tmpArray[j]);
+			}
+		}
+	}
+	
+	return includeArray;
 }
