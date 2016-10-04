@@ -419,47 +419,58 @@ gulp.task('watch', ['build'], function() {
 	var vendorStyles = glob.sync('src/assets/styles/vendor/**') || [];
 	var watchedStyles = siteStyles.concat(vendorStyles);
 	
-	gulp.watch(watchedStyles, ['build-styles'], function(event) {
+	gulp.watch(watchedStyles, ['build-styles']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch javascript files
-	gulp.watch(config.src.app.js.site, ['build-js'], function(event) {
+	gulp.watch(config.src.app.js.site, ['build-js']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch javascript files
-	gulp.watch(config.src.app.js.vendor, ['build-js'], function(event) {
+	gulp.watch(config.src.app.js.vendor, ['build-js']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch template files
-	gulp.watch(config.src.app.templates, ['build-js'], function(event) {
+	gulp.watch(config.src.app.templates, ['build-js']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch index.tpl.html
-	gulp.watch('src/index.tpl.html', ['index:build'], function(event) {
+	gulp.watch('src/index.tpl.html', ['index:build']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
+
 	
 	//watch media assets
-	gulp.watch(config.src.app.assets.media, ['build-assets'], function(event) {
+	gulp.watch(config.src.app.assets.media, ['build-assets']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch fonts
-	gulp.watch(config.src.app.assets.fonts, ['build-assets'], function(event) {
+	gulp.watch(config.src.app.assets.fonts, ['build-assets']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch gulpfile
-	gulp.watch('gulpfile.js', ['build-js', 'build-styles', 'build-assets'], function(event) {
+	gulp.watch('gulpfile.js', ['build-js', 'build-styles', 'build-assets']).on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 	
 	//watch config.json
-	gulp.watch('config.json', ['build-js', 'build-styles', 'build-assets'], function(event) {
+	gulp.watch('config.json', ['build-js', 'build-styles', 'build-assets']).on('change', function(event) {
+		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+	});
+	
+	//watch build directory
+	gulp.watch('build/**').on('change', function(event) {
+		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+	});
+	
+	//watch production directory
+	gulp.watch('bin/**').on('change', function(event) {
 		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 	});
 });
