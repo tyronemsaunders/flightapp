@@ -1,10 +1,10 @@
 angular
-	.module('ngSassFoundation.home')
+	.module('flyingBye.home')
 	.controller('HomeController', HomeController);
 
-HomeController.$inject = ['$scope'];
+HomeController.$inject = ['$scope', '$state'];
 
-function HomeController($scope) {
-
+function HomeController($scope, $state) {
+	$state.go('app.home.map');
 }
 

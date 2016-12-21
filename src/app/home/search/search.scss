@@ -1,0 +1,23 @@
+#search {
+  margin: auto 4rem;
+  padding: 3rem 0;  
+  md-autocomplete, md-input-container, md-tabs {
+    width: 100%;
+  }
+  input, md-autocomplete, md-autocomplete-wrap {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+  }
+  label {
+    padding: 1rem 0;
+  }
+}
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container, .md-select-menu-container, .md-datepicker-calendar-pane {
+  z-index: 500;
+}
+
+.search-form-tab-container {
+  width: 100%;
+}

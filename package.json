@@ -1,10 +1,11 @@
 {
-  "name": "ngsassfoundation",
-  "version": "0.0.4",
-  "description": "A boilerplate for building AngularJS apps using Foundation 6 and Sass",
+  "name": "flyingBye",
+  "version": "1.0.0",
+  "description": "Presentation layer for flyingBye",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./build -a localhost -p 8000 -c-1"
   },
   "author": "Tyrone Saunders",
   "license": "ISC",
@@ -35,5 +36,8 @@
     "merge-stream": "^1.0.0",
     "streamqueue": "^1.1.1",
     "vinyl-fs": "^2.4.3"
+  },
+  "dependencies": {
+    "http-server": "^0.9.0"
   }
 }

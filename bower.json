@@ -25,5 +25,12 @@
     "angular-placeholders": "*",
     "font-awesome": "fontawesome#^4.6.3",
     "motion-ui": "^1.2.2"
+  },
+  "dependencies": {
+    "angular-material": "^1.1.1",
+    "angular-aria": "^1.6.0",
+    "angular-messages": "^1.6.0",
+    "leaflet": "^1.0.2",
+    "angular-resource": "^1.6.0"
   }
 }

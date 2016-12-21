@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="ngSassFoundation" ng-controller="AppController">
+<html ng-app="flyingBye" ng-controller="AppController">
     <head>
         <title ng-bind="pageTitle"></title>
         
@@ -10,7 +10,7 @@
         <meta name="twitter:description" content="">
         <meta name="twitter:creator" content="">
         <meta name="twitter:image:src" content="">
-        <meta property="og:title" content="ngSassFoundation" />
+        <meta property="og:title" content="Flying Bye" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="" />
         <meta property="og:image" content="" />
@@ -29,29 +29,26 @@
         {% endfor %}
         
     </head>
-    <body>
-        <div class="off-canvas-wrapper">
-            <div class="off-canvas-wrapper-inner">                
-                <!-- Off Canvas Menu -->
-                <div class="off-canvas position-left" ui-view="off_canvas_left"></div>
-                <!-- End Off Canvas Menu -->
-                
-                <!-- Off Canvas Content -->
-                <div class="off-canvas-content">
-                    
-                    <!-- Header and Nav -->
-                    <header ui-view="header"></header>
-                    <!-- End Header and Nav -->
-                    
-                    <!-- Main Content -->
-                    <div class="row column expanded" ui-view="main"></div>
-                    <!-- End Main Content --> 
-                    
-                    <!-- Footer -->
-                    <footer class="main-footer row column expanded" ui-view="footer"></footer>
-                    <!-- End Footer --> 
-                </div>
-            </div>
-        </div>
+    <body layout="row">
+    	
+    	<!-- Side Navigation Menu -->
+    	<md-sidenav ui-view="sidenav" md-component-id="site-sidenav" class="md-sidenav-right"></md-sidenav>
+    	<!-- End Side Navigation Menu -->
+    	
+    	<div id="main-content" layout="column" flex>
+    		
+    		<!-- Header and Nav -->
+    		<!-- <md-toolbar id="site-header" md-scroll-shrink layout-align="center" ui-view="header"></md-toolbar>-->
+    		<div id="site-header" layout-align="center" ui-view="header"></div>
+    		<!-- End Header and Nav -->
+    		
+    		<!-- Main Content -->
+    		<section ui-view="main"></section>
+    		<!-- End Main Content --> 
+    		
+    		<!-- Footer -->
+            <footer ui-view="footer"></footer>
+            <!-- End Footer --> 
+    	</div>
     </body>
 </html>

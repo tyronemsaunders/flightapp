@@ -1,5 +1,5 @@
 angular
-	.module('ngSassFoundation')
+	.module('flyingBye')
 	.config(appConfig);
 
 
@@ -23,16 +23,18 @@ function appConfig($stateProvider, $urlRouterProvider) {
 				//absolute name viewname@statename
 				//nothing following @ symbol because the root template (index.tpl.html) is unnamed
 				'header@' : {
-					templateUrl: 'core/header/default_header.tpl.html'
+					controller: 'HeaderController',
+					templateUrl: 'core/header/md_header.tpl.html'
 				},
 				'main@' : {
-					templateUrl: 'core/main/default_main.tpl.html'
+					template: '<h1>Main Section</h1>'
 				},
 				'footer@' : {
 					templateUrl: 'core/footer/default_footer.tpl.html'
 				},
-				'off_canvas_left@' : {
-					templateUrl : 'core/offcanvas/default_offcanvas.tpl.html'
+				'sidenav@' : {
+					controller: 'SideNavController',
+					templateUrl: 'core/sidenav/default_sidenav.tpl.html'
 				}
 			},
 			//arbitrary data object

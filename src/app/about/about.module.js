@@ -1,4 +1,4 @@
 angular
-	.module('ngSassFoundation.about', [
-		'ngSassFoundation.core'
+	.module('flyingBye.about', [
+		'flyingBye.core'
 ]);

@@ -1,9 +1,14 @@
-.main-footer {
-  background-color: #E6E6E6;
-  
-  p {
-    margin-bottom: 0;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+.default-footer {
+  li.social-icon > a {
+    padding-left: .2rem;
+    padding-right: .2rem;
+  }
+}
+
+ul.footer-menu {
+  margin: 0;
+  list-style: none;
+  li {
+    display: inline-block;
   }
 }

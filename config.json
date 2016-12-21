@@ -84,27 +84,28 @@
       "js" : [
         "vendor/angular/angular.js",
         "vendor/angular-animate/angular-animate.js",
-        "vendor/angular-foundation-6/dist/angular-foundation.js",
         "vendor/angular-ui-router/release/angular-ui-router.js",
-        "vendor/what-input/what-input.js"
+        "vendor/angular-resource/angular-resource.js",
+        "vendor/what-input/what-input.js",
+        "vendor/AngularSlideables/angularSlideables.js",
+        "vendor/angular-aria/angular-aria.js",
+        "vendor/angular-messages/angular-messages.js",
+        "vendor/angular-material/angular-material.js",
+        "vendor/leaflet/dist/leaflet.js"
       ],
       "templates" : [
         
       ],
       "styles" : [
-        "src/assets/styles/vendor/foundation-flex-hack.scss",
-        "vendor/font-awesome/scss/font-awesome.scss"
+      	"src/assets/fonts/google-fonts.scss",
+        "vendor/angular-material/angular-material.css",
+        "vendor/leaflet/dist/leaflet.css"
       ],
       "stylePartials" : [
-        "vendor/font-awesome/scss/*.scss",
-        "!vendor/font-awesome/scss/font-awesome.scss",
-        "vendor/foundation-sites/scss/*.scss",
-        "vendor/foundation-sites/scss/**/*.scss"
       ],
       "assets" : {
         "images" : [],
         "fonts" : [
-          "vendor/font-awesome/fonts/**"
         ]
       }
     }

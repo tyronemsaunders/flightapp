@@ -1,5 +1,5 @@
 angular
-	.module('ngSassFoundation.about')
+	.module('flyingBye.about')
 	.config(aboutConfig);
 
 aboutConfig.$inject = ['$stateProvider'];

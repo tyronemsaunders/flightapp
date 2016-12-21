@@ -1,5 +1,5 @@
 angular
-	.module('ngSassFoundation.about')
+	.module('flyingBye.about')
 	.controller('AboutController', AboutController);
 
 AboutController.$inject = ['$scope'];

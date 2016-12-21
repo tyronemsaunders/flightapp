@@ -13,6 +13,6 @@
  * specified, as shown below.
  */
 angular
-	.module('ngSassFoundation.home', [
-		'ngSassFoundation.core'
+	.module('flyingBye.home', [
+		'flyingBye.core'
 ]);

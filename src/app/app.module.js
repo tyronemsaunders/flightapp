@@ -1,9 +1,11 @@
 angular
-	.module('ngSassFoundation', [
+	.module('flyingBye', [
 		/* Shared modules */
-		'ngSassFoundation.core',
+		'flyingBye.core',
 		
 		/* Feature areas */
-		'ngSassFoundation.home',
-		'ngSassFoundation.about'
+		'flyingBye.home',
+		'flyingBye.about',
+		'flyingBye.flights',
+		'flyingBye.places'
 ]);
