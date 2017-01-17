@@ -13,14 +13,11 @@ function homeHeroConfig($stateProvider) {
 				controller: 'OffcanvasFlightResultsController',
 				templateUrl : 'home/hero/offcanvas/flight-results/offcanvas-flight-results.tpl.html'
 		    },
-			"hero-content-top@app.home" : {
+			"hero-welcome@app.home" : {
 				controller: 'HomeHeroContentController',
-				templateUrl: 'home/hero/content/hero-content-top.tpl.html'
+				templateUrl: 'home/hero/content/hero-welcome.tpl.html'
 		    },
-		    "hero-content-back@app.home" : {
-				templateUrl: 'home/hero/content/hero-content-back.tpl.html'
-		    },
-		    "hero-content-bottom@app.home" : {
+		    "hero-map@app.home" : {
 		    	controller: 'FlightsMapController',
 				templateUrl: 'flights/map/flights-map.tpl.html'
 		    },
@@ -31,6 +28,14 @@ function homeHeroConfig($stateProvider) {
 		    "main-offcanvas@" : {
 		    	controller: 'OffcanvasCalendarController',
 		    	templateUrl: 'home/hero/offcanvas/calendar/offcanvas-calendar.tpl.html'
+		    }
+		}
+	})
+	.state('app.home.hero.map', {
+		views: {
+			"hero-map@app.home" : {
+		    	controller: 'FlightsMapController',
+				templateUrl: 'flights/map/flights-map.tpl.html'
 		    }
 		}
 	})

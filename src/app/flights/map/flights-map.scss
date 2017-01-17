@@ -3,27 +3,6 @@
   height: 100%;
 }
 
-#map-preview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: $active-black;
-  z-index: 1002;
-  width: 0;
-  height: 0;
-  border-top: 100px solid $matte;
-  border-right: 100px solid transparent;
-  font-family: Montserrat, sans-serif;
-  font-weight: 700;
-  font-size: .75rem;
-  letter-spacing: .02rem;
-  span {
-    position: relative;
-    top: -90px;
-    left: 10px;
-  }
-}
-
 #flights-map {
   div.leaflet-popup-content {
     margin: 0;

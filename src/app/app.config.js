@@ -3,11 +3,9 @@ angular
 	.config(appConfig);
 
 //$inject is used to manually identify dependences to safeguard agains minification issues and avoid creating long list of inline dependencies
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$qProvider'];
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-function appConfig($stateProvider, $urlRouterProvider, $qProvider) {
-	
-	//$qProvider.errorOnUnhandledRejections(false);
+function appConfig($stateProvider, $urlRouterProvider) {
 	
 	// urlRouterProvider.otherwise defines the path that is used when an invalid route is requested
 	// in this app it it recommended to use parent.child syntax when defining states therefore the if the URL doesn't match for

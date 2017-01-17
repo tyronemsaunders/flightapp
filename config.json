@@ -97,8 +97,6 @@
         "vendor/leaflet/dist/leaflet.js",
         "vendor/moment/moment.js",
         "vendor/moment-duration-format/lib/moment-duration-format.js",
-        "vendor/Peel.js/src/peel.js",
-        "vendor/gsap/src/uncompressed/TweenLite.js",
         "vendor/Leaflet.GeometryUtil/dist/leaflet.geometryutil.js",
         "vendor/leaflet.markercluster/dist/leaflet.markercluster-src.js",
         "vendor/Leaflet.Snap/leaflet.snap.js"
@@ -113,7 +111,6 @@
         "vendor/leaflet/dist/leaflet.css", 
         "vendor/angular-ui-select/dist/select.css",
         "vendor/angularjs-slider/dist/rzslider.scss",
-        "vendor/Peel.js/src/peel.css",
         "vendor/leaflet.markercluster/dist/MarkerCluster.css"
       ],
       "stylePartials" : [

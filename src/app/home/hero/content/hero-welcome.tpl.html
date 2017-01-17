@@ -1,4 +1,4 @@
-<div class="hero-homepage-top">
+<div class="hero-welcome" ng-class="{'hide-panel': hidePanel}">
 	<div class="column row align-middle">
 		<div class="column small-4">
 			<h2 class="tagline">Embrace your randomness</h2>
@@ -18,5 +18,8 @@
 				</div>
 			</div>
 		</div>	
+	</div>
+	<div class="map-toggle" ng-class="{'is-hidden': !mapReady}" ng-click="slidePanel()">
+		<span class="map-toggle-instruction">Click for flights</span>
 	</div>
 </div>

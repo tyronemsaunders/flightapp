@@ -9,7 +9,14 @@ function HomeHeroContentController($scope, helpers, appBootstrapFactory, flights
 	$scope.showPromos = false;
 	$scope.userCity;
 	$scope.specials = [];
+	$scope.mapReady = false
+	$scope.hidePanel = false;
 	
+	$scope.slidePanel = slidePanel;
+	
+	function slidePanel() {
+		$scope.hidePanel = true;
+	}
 	
 	// watch for changes to the appBootstrapFactory
 	$scope.$watch(
@@ -25,7 +32,7 @@ function HomeHeroContentController($scope, helpers, appBootstrapFactory, flights
 				var flights = flightsQuery.getCheapestPerCity(newApp.flights);
 				var numFlights = flights.length;
 				
-				// pick random flights to show on page
+				// pick random flights to show on page, not guaranteed to be unique
 				for (var i = 0; i < 3; i++) {
 					var obj = {};
 					var random = helpers.getRandomInt(0, numFlights);
@@ -36,5 +43,10 @@ function HomeHeroContentController($scope, helpers, appBootstrapFactory, flights
 				}
 				$scope.showPromos = true;
 			}
+			
+			if (newApp.mapReady) {
+				$scope.mapReady = true;
+			}
+			
 		}, true);
 }
