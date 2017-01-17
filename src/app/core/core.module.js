@@ -3,10 +3,13 @@ angular
 		/* Angular modules */
 		'ngResource',
 		'ngAnimate',
-		'ngMaterial',
+		'ngSanitize',
 		/* Cross App Modules */
 		'templates',
 		/* Third Party Modules */
+		'mm.foundation',
 		'ui.router',
-		'angularSlideables'
+		'ui.select',
+		'rzModule',
+		'angularSpinners'
 ]);

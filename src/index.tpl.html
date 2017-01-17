@@ -29,26 +29,35 @@
         {% endfor %}
         
     </head>
-    <body layout="row">
-    	
-    	<!-- Side Navigation Menu -->
-    	<md-sidenav ui-view="sidenav" md-component-id="site-sidenav" class="md-sidenav-right"></md-sidenav>
-    	<!-- End Side Navigation Menu -->
-    	
-    	<div id="main-content" layout="column" flex>
-    		
-    		<!-- Header and Nav -->
-    		<!-- <md-toolbar id="site-header" md-scroll-shrink layout-align="center" ui-view="header"></md-toolbar>-->
-    		<div id="site-header" layout-align="center" ui-view="header"></div>
-    		<!-- End Header and Nav -->
-    		
-    		<!-- Main Content -->
-    		<section ui-view="main"></section>
-    		<!-- End Main Content --> 
-    		
-    		<!-- Footer -->
-            <footer ui-view="footer"></footer>
-            <!-- End Footer --> 
+    <body>
+    	<div class="off-canvas-wrapper">
+    		<div class="off-canvas-wrapper-inner">
+	    		<!-- Off Canvas Menu -->
+	            <div id="site-offcanvas" class="off-canvas position-left"><div ui-view="site-offcanvas"></div></div>
+	            <!-- End Off Canvas Menu -->
+	            
+	            <!-- Off Canvas Content -->
+	            <div class="off-canvas-content">
+	                
+	                <!-- Header and Nav -->
+	                <header ui-view="header"></header>
+	                <!-- End Header and Nav -->
+	                
+	                <!-- Main Content -->
+	                <div class="main-content off-canvas-wrapper">
+	                	<div class="off-canvas-wrapper-inner">
+		                	<div id="main-offcanvas" class="off-canvas position-right"><div ui-view="main-offcanvas"></div></div>
+			                <div class="off-canvas-content" ui-view="main"></div>	
+	                	</div>
+	                </div>
+	                <!-- End Main Content --> 
+	                
+	                <!-- Footer -->
+	                <footer ui-view="footer"></footer>
+	                <!-- End Footer --> 
+	            </div>	
+    		</div>
     	</div>
+        		            
     </body>
 </html>

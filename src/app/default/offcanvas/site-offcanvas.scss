@@ -1,0 +1,30 @@
+.site-offcanvas-header {
+  height: 76.375px;
+  background-color: $evening;
+  .text-mark {
+    color: white;
+  }  
+}
+
+.site-offcanvas-navigation {
+  a {
+    color: $active-black;
+    text-decoration: none;
+  }
+  a:link {
+    color: $active-black;
+    text-decoration: none;
+  }
+  a:visited {
+    color: $active-black;
+    text-decoration: none;
+  }
+  a:hover {
+    color: $gold;
+    text-decoration: none;
+  }
+  a:active {
+    color: $gold;
+    text-decoration: none;
+  }
+}

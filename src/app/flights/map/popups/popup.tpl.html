@@ -1,0 +1,18 @@
+<div class="map-popup">
+	<div class="popup-heading row expanded align-middle">
+		<div class="column small-12">
+			<h4 class="airport-city">{{flight.destination.city}}</h4>
+			<h5 class="airport-code">{{flight.destination.airport}}</h5>
+		</div>
+	</div>
+	<div class="popup-info row expanded align-middle">
+		<div class="column small-12">
+			<p class="fly-dates">{{flightDateRangeString(flight)}}</p>
+			<p class="starting-price">Flights starting at ${{flight.price}}</p>
+			<ul class="popup-action">
+				<li><a class="popup-link" target="_blank"><i class="fa fa-share-square" aria-hidden="true"></i> Share flight</a></li>
+				<li ng-click="toggleDestinationResults(flight.destination.airport)"><a class="popup-link"><i class="fa fa-eye" aria-hidden="true"></i> View more flights to {{flight.destination.city}}</a></li>
+			</ul>
+		</div>
+	</div>	
+</div>

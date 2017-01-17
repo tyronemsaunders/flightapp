@@ -1,0 +1,22 @@
+<div class="calendar-header row align-middle">
+	<i class="fa fa-angle-left text-left column small-2" ng-click="previousMonth()"></i>
+	<span class="column small-8">{{month.format("MMMM YYYY")}}</span>
+	<i class="fa fa-angle-right text-right column small-2" ng-click="nextMonth()"></i>
+</div>
+<div class="calendar-week calendar-days row align-middle">
+	<span class="calendar-day columns">Sun</span>
+    <span class="calendar-day columns">Mon</span>
+    <span class="calendar-day columns">Tue</span>
+    <span class="calendar-day columns">Wed</span>
+    <span class="calendar-day columns">Thu</span>
+    <span class="calendar-day columns">Fri</span>
+    <span class="calendar-day columns">Sat</span>
+</div>
+<div class="calendar-week row align-middle" ng-repeat="week in weeks">
+	<span class="calendar-day columns" 
+			ng-class="{today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected)}"
+	 		ng-click="select(day)"
+	 		ng-repeat="day in week.days">
+ 		{{day.number}}
+	</span>	
+</div>

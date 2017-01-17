@@ -18,6 +18,7 @@ var gulp = require('gulp'), //be sure to install gulp globally as well
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
     gutil = require('gulp-util'),
+    wrap = require('gulp-wrap'),
     merge = require('merge-stream'),
     map = require('map-stream'),
     nunjucksRender = require('gulp-nunjucks-render'),
@@ -70,13 +71,13 @@ gulp.task('compile-js', ['build-js'], function() {
 			gulp.src(config.dest.build.js.vendor + '/**'),
 			gulp.src(config.dest.build.js.site + '/**')
 	)
-	.pipe(sourcemaps.init()) // initialize sourcemaps
+	//.pipe(sourcemaps.init()) // initialize sourcemaps
 	  .pipe(gulpConcat("app.js")) // combine individual files into one file
 	  .pipe(rename({basename: pkg.name + '-' + pkg.version}))
 	  .pipe(ngAnnotate())
 	  .pipe(rename({suffix: '.min'})) // rename file for minification
 	  .pipe(uglify().on('error', gutil.log)) // minify the concatentated file
-	.pipe(sourcemaps.write()) //inline source mpas are embedded in the source file
+	//.pipe(sourcemaps.write()) //inline source mpas are embedded in the source file
 	.pipe(gulp.dest(config.dest.prod.js)); //move files to build directory
 });
 
@@ -184,6 +185,7 @@ gulp.task('order-site-js', function(callback) {
 					this.emit('end'); //tell gulp to end the task that errored out to prevent the task hanging
 				}
 			}))
+			.pipe(wrap('(function(){"use strict";<%= contents %>})();')) // wrap each src js file into IIFE
 			.pipe(jshint()) // lint each file to ensure that it follows project conventions
 		    .pipe(rename({
 		    	prefix : prefixer + '-'
@@ -287,7 +289,10 @@ gulp.task('copy-vendor-styles-to-src', function() {
 	var fonts = gulp.src(config.src.vendor.assets.fonts)
 						.pipe(vfs.dest('src/assets/fonts', {overwrite: false}));
 	
-	return merge(styles, stylePartials, fonts);
+	var images = gulp.src(config.src.vendor.assets.images)
+						.pipe(vfs.dest('src/assets/media/images', {overwrite: false}));
+	
+	return merge(styles, stylePartials, fonts, images);
 });
 
 /**
@@ -376,7 +381,8 @@ gulp.task('index:production', ['compile-js', 'compile-styles'], function() {
 gulp.task('clean', function() {	
 	return del([
 	  'build/**/*',
-	  'bin/**/*'
+	  'bin/**/*',
+	  'src/vendor-js/**/*'
 	]);
 });
 

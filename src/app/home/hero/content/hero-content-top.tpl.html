@@ -1,0 +1,22 @@
+<div class="hero-homepage-top">
+	<div class="column row align-middle">
+		<div class="column small-4">
+			<h2 class="tagline">Embrace your randomness</h2>
+		</div>
+		<div class="column small-4">
+			<div class="hero-gif text-center">
+				<img src="assets/media/images/flyingBye-clock.gif" alt="Flying Bye Welcome">
+			</div>
+		</div>
+		<div class="column small-4">
+			<div ng-show="located">
+				<span class="hero-location">Say goodbye to <span class="capitalize">{{userCity}}</span></span>
+			</div>
+			<div ng-show="showPromos">
+				<div ng-repeat="special in specials">
+					<a class="hero-promo" ng-href="{{special.link}}" target="_blank">{{special.destination}} from ${{special.price}}</a>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>

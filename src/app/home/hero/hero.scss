@@ -1,101 +1,301 @@
-/* Small only */
-@media screen and (max-width: 37.4375em) {
-  #welcome {
-    @include aspect-ratio(9, 10);
-    background-image: url("../media/images/plane-9x10.png");
-    background-repeat: no-repeat;
-    background-size: contain;
+#hero-sidebar {
+  background-color: $matte;  
+}
+
+#hero-container {
+  @include aspect-ratio(16, 9);
+}
+
+.hero-sidebar-header {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  
+  .text-mark {
+    color: $evening;
+  }
+  .tagline {
+    color: $active-black;
   }
 }
 
-/* Medium only */
-@media screen and (min-width: 38em) and (max-width: 63.9375em) {
-  #welcome {
-    @include aspect-ratio(16, 9);
-    background-image: url("../media/images/plane-16x9.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-  } 
-}
+.hero-sidebar-content {
+  padding: 0.9375rem;
+  
+  .input-label {
+    color: $secondary-gray;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: .75rem;
+    letter-spacing: .02rem;
+  }
+  
+  .budget-container {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    background-color: white;
+    
+    .currency-input {
+      border: 1px inset $gold;
+      display: inline;
+      margin: auto 0.9375rem;
+      color: $active-black;
+    }
 
-/* Large and up */
-@media screen and (min-width: 64em) {
-  #welcome {
-    @include aspect-ratio(16, 9);
-    background-image: url("../media/images/plane-16x9.png");
-    background-repeat: no-repeat;
-    background-size: contain;
+    .currency-input > input {
+      border: 0;
+      display: inline;
+      width: 95%;
+      box-shadow: none;
+      margin-bottom: 0;
+      color: $active-black;
+    }
+  }
+  
+  .airports-container {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    background-color: white;
+    color: $active-black;
+    
+    .airport-selector {
+      border-bottom: solid 1px $gold;
+      color: $active-black;
+      font-family: 'Open Sans', sans-serif; 
+    }
+    
+    .ui-select-choices {
+      width: auto;
+      position: absolute;
+      right: 0;
+      margin-right: 1.5rem;
+      z-index: 1500;
+      background-color: white;
+      color: $active-black;
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+    }
+  }
+  
+  .dates-container {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    background-color: white;
+    
+    .input-label {
+      color: $secondary-gray;
+    }
+    
+    .date-day {
+      color: $active-black;
+      font-size: 1.5rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+    }
+    
+    .date-month, .date-year {
+      color: $active-black;
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+    }
+    
+    .button {
+      color: $gold;
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      background-color: transparent;
+      border: 1px solid $gold;
+      text-transform: uppercase;
+      margin: 0 auto;
+    }
+    
+    .button:active {
+      color: white;
+      background-color: $gold;
+    }
+    .button:hover {
+      color: white;
+      background-color: $gold;
+    }
+    
+    &:first-child {
+      margin-right: .75rem;
+    }
+  }
+  
+  .passengers-container {
+    padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
+    background-color: white;
+    
+    &:first-child {
+      margin-right: .75rem;
+      margin-left: 0.9375rem;
+    }
+    
+    &:last-child {
+      margin-right: 0.9375rem;
+    }
+    
+    .input-info {
+      color: $active-black;
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      padding: 0 0 0 .2rem;
+    }
+    
+    .passenger-input input {
+      border: 1px inset $gold;
+      box-shadow: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      height: 1.7rem;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    
+  }
+  
+  .submit-container {
+    .button {
+      color: $gold;
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      background-color: transparent;
+      border: 1px solid $gold;
+      text-transform: uppercase;
+      margin: 0 auto;
+    }
+    
+    .button:active {
+      color: white;
+      background-color: $gold;
+    }
+    .button:hover {
+      color: white;
+      background-color: $gold;
+    }
+    
+    a {
+      color: $gold;
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      margin-top: .5rem;
+      display: block;
+    }
+    a:link {
+      color: $gold;
+      text-decoration: none;
+    }
+    a:visited {
+      color: $gold;
+      text-decoration: none;
+    }
+    a:hover {
+      color: $secondary-gray;
+      text-decoration: none;
+    }
+    a:active {
+      color: $secondary-gray;
+      text-decoration: none;
+    }
   }
 }
 
-.hero-foreground {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0, 0.6);
-  .hero-left, .hero-right {
+.budget-container, .airports-container, .dates-container, .passengers-container, .submit-container {
+  margin-bottom: .5rem;
+}
+
+.calendar-offcanvas {
+  .input-label {
+    color: $secondary-gray;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: .02rem;
+  }
+  
+  .error-message {
+    font-family: 'Open Sans', san-serif;
+    font-size: .85rem;
+    color: $sunset;
+  }
+}
+
+.calendar-offcanvas-header {
+  height: 76.375px;
+  background-color: $evening;
+  .text-mark {
     color: white;
   }
 }
 
-.hero-foreground-container {
-  position: absolute;
-  width: 100%;
-  top: 37%;
-}
-.hero-left {
-  position: absolute;
-  left: 0;
-  width: 31.5%;
-}
-
-.hero-right {
-  position: absolute;
-  right: 0;
-  width: 36.8%;
-  text-align: right;
-  margin-right: 5%;
-}
-
-ul.featured-flights {
-  list-style: none;
-  text-align: right;
-  .featured_destination {
-    font-size: 32px;
-    color: #DDDDDD;
-    letter-spacing: .01rem;
-    line-height: 1.25;
-    font-family: Montserrat, sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
+.hero-homepage-top {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: url("../../assets/media/images/welcome-9x6.75.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  
+  >div {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
   }
-  .featured_price {
-    font-size: 32px;
-    color: #DDDDDD;
-    letter-spacing: .01rem;
-    line-height: 1.25;
-    font-family:  'Open Sans', sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding-left: 2rem;
+  
+  .tagline {
+    color: white;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    text-align: right;
   }
+  
 }
 
-.hero-welcome {
-  font-size: 36px;
-  color: #DDDDDD;
-  font-family:  'Open Sans', sans-serif;
+.hero-location {
+  display: block;
+  color: white;
+  letter-spacing: .01rem;
+  line-height: 1.75rem;
   text-decoration: none;
-  font-weight: 300;
-  margin: 0;
-  padding-bottom: 3px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: .01rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 }
 
-.hero-tagline {
-  font-size: 24px;
-  color: #DDDDDD;
+.hero-promo {
   font-family: Montserrat, sans-serif;
-  text-decoration: none;
   font-weight: 700;
-  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: .02rem;
+  color: white;
+  margin-right: 1rem;
+}
+a.hero-promo {
+      color: white;
+  }
+a.hero-promo:link {
+  color: white;
+  text-decoration: none;
+}
+a.hero-promo:visited {
+  color: white;
+  text-decoration: none;
+}
+a.hero-promo:hover {
+  color: $gold;
+  text-decoration: none;
+}
+a.hero-promo:active {
+  color: $gold;
+  text-decoration: none;
 }

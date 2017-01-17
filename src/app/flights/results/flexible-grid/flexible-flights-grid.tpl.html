@@ -1,0 +1,25 @@
+<div class="flexible-grid-container">
+	<div class="flexible-grid-header-row row align-middle">
+		<div class="columns flexible-grid-legend"></div>
+		<div class="columns flexible-grid-column-header"
+			ng-class="{selected: isReturnDate(returnDate), hovered: highlightReturnLeg(returnDate)}"
+			ng-repeat="returnDate in returnDates">
+			{{returnDate.date.format("ddd MM/DD")}}
+		</div>
+	</div>
+	<div class="flexible-grid-results-row row align-middle"
+		ng-repeat="journey in journeys">
+		<div class="columns flexible-grid-row-header"
+			ng-class="{selected: isOutboundDate(journey.outbound), hovered: highlightOutboundLeg(journey.outbound)}">
+			{{journey.outbound.date.format("ddd MM/DD")}}
+		</div>
+		<div class="columns flexible-grid-result"
+			ng-class="{selected: isSelected(journey.outbound, flight.return)}"
+			ng-mouseover="mouseoverDate(journey.outbound.difference, flight.return.difference)"
+			ng-mouseleave="mouseleaveDate()"
+			ng-click="selectDate(journey.outbound.difference, flight.return.difference)"
+			ng-repeat="flight in journey.flights">
+			{{flight.price.min ? '$' + flight.price.min : 'N/A'}}
+		</div>
+	</div>	
+</div>

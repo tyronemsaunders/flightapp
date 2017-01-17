@@ -1,0 +1,76 @@
+$calendar-border-color: $gold;
+calendar, .datepicker-calendar-container {
+  display: block;
+  box-sizing: border-box;
+  background: white;
+  width: 100%; //300px;
+  border: solid 1px $calendar-border-color;
+  margin-bottom: .85rem;
+  
+  $calendar-secondary-color: $stormy;
+  
+  >div.calendar-header {
+    background: $calendar-secondary-color;
+    color: white;
+    
+    >i {
+      padding: 0 .85rem;
+      cursor: pointer;
+      box-sizing: border-box;
+      font-size: 1.125rem;
+      font-weight: bold;
+    }
+    
+    >span {
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      text-align: center;
+      color: inherit;
+    }
+  }
+  
+  >div.calendar-week {
+    border-top: solid 1px $calendar-border-color;
+    
+    &:first-child {
+      border-top: none;
+    }
+    
+    >span.calendar-day {
+      border-left: solid 1px $calendar-border-color;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.75rem;
+      text-align: center;
+      background: white;
+      cursor: pointer;
+      color: black;
+      
+      &:first-child {
+        border-left: none;
+      }
+      
+      &.today {
+        background: $stormy;
+        color: white;
+      }
+      &.different-month {
+        color: #C0C0C0;
+      }
+      &.selected {
+        background: $gold;
+        color: white;
+      }
+    }
+    &.names>span {
+      color: $calendar-secondary-color;
+      font-weight: bold;
+    }
+  }
+  >div.calendar-days {
+    span.calendar-day {
+      border-left: none;
+    }
+  }
+}

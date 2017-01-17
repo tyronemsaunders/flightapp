@@ -1,0 +1,106 @@
+#flights-map {
+  width: 100%;
+  height: 100%;
+}
+
+#map-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $active-black;
+  z-index: 1002;
+  width: 0;
+  height: 0;
+  border-top: 100px solid $matte;
+  border-right: 100px solid transparent;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+  font-size: .75rem;
+  letter-spacing: .02rem;
+  span {
+    position: relative;
+    top: -90px;
+    left: 10px;
+  }
+}
+
+#flights-map {
+  div.leaflet-popup-content {
+    margin: 0;
+  }
+  
+  .popup-heading {
+    background-color: $midnight;
+    padding: 2rem;
+    text-align: center;
+    h4.airport-city {
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      letter-spacing: .02rem;
+      color: white;
+    }
+    h5.airport-code {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: $matte;
+    }
+  }
+  
+  .popup-info  {
+    background-color: $matte;
+    padding: 2rem;
+    p.fly-dates, p.starting-price {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      color: $active-black;
+    }
+    
+    ul.popup-action {
+      list-style-type: none;
+      margin: 0;
+      &:first-child {
+        border-top: solid 1px $gold;
+      }
+      li {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: solid 1px $gold;
+      }
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: $active-black;
+      a.popup-link {
+        color: $active-black;
+        text-decoration: none;
+      }
+      a.popup-link:link {
+        color: $active-black;
+        text-decoration: none;
+      }
+      a.popup-link:visited {
+        color: $active-black;
+        text-decoration: none;
+      }
+      a.popup-link:hover {
+        color: $evening;
+        text-decoration: none;
+      }
+      a.popup-link:active {
+        color: $evening;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.destination-icon {
+  background-color: $matte;
+  color: white;
+  border-radius: 50%;
+  padding: .25rem;
+  border: solid white .5rem;
+}

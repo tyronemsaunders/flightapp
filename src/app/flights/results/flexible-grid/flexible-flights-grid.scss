@@ -1,0 +1,88 @@
+.flexible-grid-container {
+  display: block;
+  box-sizing: border-box;
+  background: white;
+  width: 100%;
+  //border: solid 1px $gold;
+  
+  div.flexible-grid-header-row {
+    background: white;
+    color: $active-black;
+    
+    div.flexible-grid-column-header {
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      text-align: center;
+      color: inherit;
+      
+      &.hovered {
+        background: $gold;
+        color: white;
+      }
+      
+      &.selected {
+        background: $gold;
+        color: white;
+      }
+    }
+  }
+  
+  div.flexible-grid-results-row {
+    border-top: solid 1px $gold;
+    
+    &:first-child {
+      border-top: none;
+    }
+    
+    div.flexible-grid-row-header {
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      text-align: center;
+      background: white;
+      color: $active-black;
+      
+      &.hovered {
+        background: $gold;
+        color: white;
+      }
+      &.selected {
+        background: $gold;
+        color: white;
+      }
+    }
+    
+    div.columns {
+      border-left: solid 1px $gold;
+      
+      &:first-child {
+        border-left: none;
+      }
+      
+      &.flexible-grid-result {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.75rem;
+        text-align: center;
+        background: white;
+        cursor: pointer;
+        color: $active-black;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        
+        &.selected {
+          background: $gold;
+          color: white;
+        }
+        &.hovered {
+          background: $gold;
+          color: white;
+        }
+      } 
+    }    
+  }
+}

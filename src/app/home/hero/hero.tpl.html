@@ -1,15 +1,12 @@
-<div flex class="hero-foreground">
-	<div class="hero-foreground-container">
-		<div class="hero-left">
-			<ul class="featured-flights">
-				<li><span class="featured_destination">Los Angeles</span> <span class="featured_price">$600</span></li>
-				<li><span class="featured_destination">Paris</span> <span class="featured_price">$800</span></li>
-				<li><span class="featured_destination">Cape Town</span> <span class="featured_price">$1600</span></li>
-			</ul>
+<div id="hero-container">
+	<div class="row expanded">
+		<div id="map-preview"><span>Click for map</span></div>
+		<div id="hero-content" class="peel column medium-9 large-9">			
+			<div class="peel-top"><div ui-view="hero-content-top"></div></div>
+			<div class="peel-back"><div ui-view="hero-content-back"></div></div>
+			<div class="peel-bottom"><div ui-view="hero-content-bottom"></div></div>	
 		</div>
-		<div class="hero-right">
-			<h2 class="hero-welcome">Say "Goodbye Houston"</h2>
-			<h4 class="hero-tagline">Embrace your randomness</h4>
-		</div>	
+		<div id="hero-sidebar" class="column medium-3 large-3" ui-view="hero-sidebar"></div>	
 	</div>
+	<div class="overlay-offcanvas" ng-class="{'is-active': offcanvasVisible()}" ui-view="overlay-offcanvas"></div>
 </div>

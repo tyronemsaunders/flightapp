@@ -1,0 +1,8 @@
+.datepicker-calendar-container {
+  position: absolute;
+  z-index: 10;
+  visibility: hidden;
+  &.show-datepicker {
+    visibility: visible;
+  }
+}

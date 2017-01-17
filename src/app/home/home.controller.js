@@ -4,7 +4,7 @@ angular
 
 HomeController.$inject = ['$scope', '$state'];
 
-function HomeController($scope, $state) {
-	$state.go('app.home.map');
+function HomeController($scope, $state) {	
+	$state.go('app.home.hero');
 }
 

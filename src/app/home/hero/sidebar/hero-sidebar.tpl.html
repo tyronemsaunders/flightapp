@@ -1,0 +1,130 @@
+<div class="hero-sidebar-header row">
+	<div class="column small-12">
+		<h1 class="text-mark">flyingBye</h1>
+	</div>
+	<div class="column small-12">
+		<span class="tagline">Embrace your randomness</span>
+	</div>
+</div>
+<div class="hero-sidebar-content row">
+	<div class="column small-12">
+		<div class="budget-container row">
+			<label class="input-label column small-12" for="budget">Budget</label>
+			<span class="currency-input column">$<input class="" type="number" name="budget" ng-model="budget" ng-change="setBudget(budget)" placeholder="What's your budget?"></span>
+		</div>
+		<div class="airports-container row">
+			<label class="input-label column small-12" for="departure">Depart from</label>
+			<ui-select class="airport-selector column small-12" ng-model="origin.selected" on-select="setOrigin(origin.selected)">
+				<ui-select-match placeholder="Where are you flying from?">
+					<span ng-bind="$select.selected.formatted"></span>
+				</ui-select-match>
+				<ui-select-choices 
+					repeat="airport in airports"
+					refresh="refreshAirports($select.search)"
+					refresh-delay="0"
+					minimum-input-length="3"
+				>
+					<span ng-bind-html="airport.formatted | highlight: $select.search"></span>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div class="dates-container row">
+			<div class="column small-6">
+				<div class="row">
+					<div class="input-label column small-12">Depart on</div>
+				</div>
+				<div class="row align-middle">
+					<div class="text-center date-day column small-6">{{dates.outbound.date.format("DD")}}</div>
+					<div class="column small-6">
+						<div class="date-month">{{dates.outbound.date.format("MMM")}}</div>
+						<div class="date-year">{{dates.outbound.date.format("YYYY")}}</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="text-center column small-12">
+						<button type="button" class="button right-off-canvas-toggle">{{dates.outbound.selected ? 'Change' : 'Select'}}</button>
+					</div>
+				</div>
+			</div>
+			<div class="column small-6" ng-class="{'disabled-element': hideReturnCalendar}">
+				<div class="row">
+					<div class="input-label column small-12">Return on</div>
+				</div>
+				<div class="row align-middle">
+					<div class="text-center date-day column small-6">{{dates.return.date.format("DD")}}</div>
+					<div class="column small-6">
+						<div class="date-month">{{dates.return.date.format("MMM")}}</div>
+						<div class="date-year">{{dates.return.date.format("YYYY")}}</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="text-center small-12">
+						<button type="button" class="button right-off-canvas-toggle">{{dates.return.selected ? 'Change' : 'Select'}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="dates-error-container row">
+			<div class="column small-12" ng-if="errors.dates.return">
+				<span class="error-message">{{errors.dates.return}}</span>
+			</div>
+			<div class="column small-12" ng-if="errors.dates.outbound">
+				<span class="error-message">{{errors.dates.outbound}}</span>
+			</div>
+		</div>
+		<div class="passengers-container row collapse">
+			<div class="column small-4 passenger-input">
+				<div class="row">
+					<div class="input-label column small-12">Adults</div>
+				</div>
+				<div class="row collapse align-middle">
+					<div class="column small-6">
+						<input type="number" name="adults" ng-model="adults" ng-change="setPassengers(adults, children, infants)">
+					</div>
+					<div class="column small-6">
+						<div class="input-info column small-12">12+</div>
+						<div class="input-info column small-12">Years</div>
+					</div>
+				</div>
+			</div>
+			<div class="column small-4 passenger-input">
+				<div class="row">
+					<div class="input-label column small-12">Children</div>
+				</div>
+				<div class="row collapse align-middle">
+					<div class="column small-6">
+						<input type="number" name="children" ng-model="children" ng-change="setPassengers(adults, children, infants)">
+					</div>
+					<div class="column small-6">
+						<div class="input-info column small-12">2-12</div>
+						<div class="input-info column small-12">Years</div>
+					</div>
+				</div>
+			</div>
+			<div class="column small-4 passenger-input">
+				<div class="row align-middle">
+					<div class="input-label column small-12">Infants</div>
+				</div>
+				<div class="row collapse align-middle">
+					<div class="column small-6">
+						<input type="number" name="infants" ng-model="infants" ng-change="setPassengers(adults, children, infants)">
+					</div>
+					<div class="column small-6">
+						<div class="input-info column small-12">0-23</div>
+						<div class="input-info column small-12">Months</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="passengers-error-container row">
+			<div class="column small-12" ng-if="errors.passengers">
+				<span class="error-message">{{errors.passengers}}</span>
+			</div>
+		</div>
+		<div class="submit-container row">
+			<div class="text-center small-12">
+				<button type="button" class="button" ng-disabled="!formReady()" ng-click="getFlights()">Let's go</button>
+			</div>
+		</div>
+	</div>
+</div> 

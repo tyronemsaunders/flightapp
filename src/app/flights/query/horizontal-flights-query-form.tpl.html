@@ -1,0 +1,142 @@
+<div class="row align-middle horizontal-flights-query">
+	<div class="column small-10">
+		<div class="row align-top">
+			<div class="column small-6 flight-airports">
+				<div class="row">
+					<div class="column small-6">
+						<label class="input-label column small-12" for="departure">Origin</label>
+						<ui-select class="airport-selector column small-12" ng-model="origin.selected" on-select="setOrigin(origin.selected)">
+							<ui-select-match placeholder="{{$select.selected.IATA || 'Airport'}}">
+								<span ng-bind="$select.selected.IATA || origin.selected"></span>
+							</ui-select-match>
+							<ui-select-choices 
+								repeat="airport in airports"
+								refresh="refreshAirports($select.search)"
+								refresh-delay="0"
+								minimum-input-length="3"
+							>
+								<span ng-bind-html="airport.formatted | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>	
+					</div>
+					<div class="column small-6">
+						<label class="input-label column small-12" for="destination">Destination</label>
+						<ui-select class="airport-selector column small-12" ng-model="destination.selected" on-select="setDestination(destination.selected)">
+							<ui-select-match placeholder="{{$select.selected.IATA || 'Airport'}}">
+								<span ng-bind="$select.selected.IATA || destination.selected"></span>
+							</ui-select-match>
+							<ui-select-choices 
+								repeat="airport in airports"
+								refresh="refreshAirports($select.search)"
+								refresh-delay="0"
+								minimum-input-length="3"
+							>
+								<span ng-bind-html="airport.formatted | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>	
+					</div>	
+				</div>
+			</div>
+			<div class="column small-6 flight-dates">
+				<div class="row">
+					<div class="column small-6" ng-focus="showDatepicker('outbound-datepicker')" ng-blur="hideDatepicker('outbound-datepicker')" tabindex="0">
+						<div class="row">
+							<div class="input-label column small-12">Depart on</div>
+						</div>
+						<div class="row align-middle">
+							<div class="text-center date-day column small-6">{{dates.outbound.date.format("DD")}}</div>
+							<div class="column small-6">
+								<div class="date-month">{{dates.outbound.date.format("MMM")}}</div>
+								<div class="date-year">{{dates.outbound.date.format("YYYY")}}</div>
+							</div>
+						</div>
+						<div selected="dates.outbound.date" datepicker="outbound-datepicker"></div>
+					</div>
+					<div class="column small-6" ng-class="{'disabled-element': hideReturnCalendar}" ng-focus="showDatepicker('return-datepicker')" ng-blur="hideDatepicker('return-datepicker')" tabindex="0">
+						<div class="row">
+							<div class="input-label column small-12">Return on</div>
+						</div>
+						<div class="row align-middle">
+							<div class="text-center date-day column small-6">{{dates.return.date.format("DD")}}</div>
+							<div class="column small-6">
+								<div class="date-month">{{dates.return.date.format("MMM")}}</div>
+								<div class="date-year">{{dates.return.date.format("YYYY")}}</div>
+							</div>
+						</div>
+						<div selected="dates.return.date" datepicker="return-datepicker"></div>
+					</div>	
+				</div>
+			</div>	
+		</div>
+		<div class="row align-top">
+			<div class="column small-8 flight-passengers">
+				<div class="row">
+					<div class="column small-4 passenger-input">
+						<div class="row">
+							<div class="input-label column small-12">Adults</div>
+						</div>
+						<div class="row collapse align-middle">
+							<div class="column small-6">
+								<input type="number" name="adults" ng-model="adults" ng-change="setPassengers(adults, children, infants)">
+							</div>
+							<div class="column small-6">
+								<div class="input-info column small-12">12+</div>
+								<div class="input-info column small-12">Years</div>
+							</div>
+						</div>
+					</div>
+					<div class="column small-4 passenger-input">
+						<div class="row">
+							<div class="input-label column small-12">Children</div>
+						</div>
+						<div class="row collapse align-middle">
+							<div class="column small-6">
+								<input type="number" name="children" ng-model="children" ng-change="setPassengers(adults, children, infants)">
+							</div>
+							<div class="column small-6">
+								<div class="input-info column small-12">2-12</div>
+								<div class="input-info column small-12">Years</div>
+							</div>
+						</div>
+					</div>
+					<div class="column small-4 passenger-input">
+						<div class="row align-middle">
+							<div class="input-label column small-12">Infants</div>
+						</div>
+						<div class="row collapse align-middle">
+							<div class="column small-6">
+								<input type="number" name="infants" ng-model="infants" ng-change="setPassengers(adults, children, infants)">
+							</div>
+							<div class="column small-6">
+								<div class="input-info column small-12">0-23</div>
+								<div class="input-info column small-12">Months</div>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<div class="column small-3 flight-budget">
+				<label class="input-label column small-12" for="budget">Budget</label>
+				<span class="currency-input column small-12">$<input class="" type="number" name="budget" ng-model="budget" ng-change="setBudget(budget)"></span>
+			</div>
+		</div>
+	</div>
+	<div class="column small-2 flight-submit">
+		<div class="text-center small-12">
+			<button type="button" class="button" ng-disabled="!formReady()" ng-click="getFlights()">Search</button>
+		</div>
+	</div>
+</div>
+<div class="passengers-error-container row">
+	<div class="column small-12" ng-if="errors.passengers">
+		<span class="error-message">{{errors.passengers}}</span>
+	</div>
+</div>
+<div class="dates-error-container row">
+	<div class="column small-12" ng-if="errors.dates.return">
+		<span class="error-message">{{errors.dates.return}}</span>
+	</div>
+	<div class="column small-12" ng-if="errors.dates.outbound">
+		<span class="error-message">{{errors.dates.outbound}}</span>
+	</div>
+</div>

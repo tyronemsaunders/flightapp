@@ -23,37 +23,16 @@ function homeConfig($stateProvider) {
 		    	  templateUrl : 'home/home.tpl.html'
 		      },
 		      "hero@app.home" : {
+		    	  controller : 'HomeHeroController',
 		    	  templateUrl : 'home/hero/hero.tpl.html'
 		      },
-		      "search@app.home" : {
-		    	  controller : 'HomeSearchController',
-		    	  templateUrl : 'home/search/search.tpl.html'
-		      },
-		      "results@app.home" : {
-		    	  templateUrl : 'home/results/results.tpl.html'
-		      },
-		      "filter_results@app.home" : {
-		    	  templateUrl : 'home/results/results.filter_results.tpl.html'
+		      "content@app.home" : {
+		    	  template : '<h1>Content Section</h1>'
 		      }
 		    },
 		    data : { 
 		    	//pageTitle will be handled by parent state 'app' in appCtrl
-		    	pageTitle : 'Home' 
+		    	pageTitle : 'Embrace your randomness' 
 		    }
-		})
-		.state('app.home.map', {
-			views: {
-				"view_results@app.home" : {
-					controller: 'FlightsMapController',
-					templateUrl : 'flights/map/flights.map.tpl.html'
-				}
-			}
-		})
-		.state('app.home.list', {
-			views: {
-				"view_results@app.home" : {
-					templateUrl : 'flights/list/flights.list.tpl.html'
-				}
-			}
 		});
 }

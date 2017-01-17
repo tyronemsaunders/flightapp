@@ -1,0 +1,31 @@
+header {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  text-decoration: none;
+  
+  .top-bar {
+    background-color: $evening;
+  }
+  .top-bar ul {
+    background-color: $evening;
+  }
+  
+  a:link {
+    color: white;
+    text-decoration: none;
+  }
+  a:visited {
+    color: white;
+    text-decoration: none;
+  }
+  a:hover {
+    color: $gold;
+    text-decoration: none;
+  }
+  a:active {
+    color: $gold;
+    text-decoration: none;
+  }
+}
+
+

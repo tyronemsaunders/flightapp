@@ -1,0 +1,12 @@
+<div class="offcanvas-flight-results">
+	<spinner name="offcanvasResultsSpinner" class="loading-spinner" img-src="assets/media/images/flyingBye-textmark-spinner.gif"></spinner>
+	<div class="offcanvas-close-dialog">
+		<button class="close-button" aria-label="Close alert" type="button" ng-click='close()'>
+	    	<span aria-hidden="true">&times;</span>
+	  	</button>
+	</div>
+	<div class="flight-query-container" ui-view="original-search"></div>
+	<div class="flight-filter-container" ui-view="filter-options"></div>
+	<div class="flexible-flights-container" ui-view="flexible-results"></div>
+	<div class="flight-results-container" ui-view="results-list"></div>
+</div>

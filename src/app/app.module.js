@@ -8,4 +8,4 @@ angular
 		'flyingBye.about',
 		'flyingBye.flights',
 		'flyingBye.places'
-]);
+]);	

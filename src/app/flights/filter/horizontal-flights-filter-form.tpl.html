@@ -1,0 +1,71 @@
+<div class="horizontal-flights-filter">
+	<div class="row align-top">
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Price</span>
+			</div>
+			<div class="column small-12">
+				<rzslider class="flyingbye-slider" rz-slider-model="price.min" rz-slider-high="price.max" rz-slider-options="price.options"></rzslider>
+			</div>
+			<div class="column small-12">
+				<span class="filter-values">${{price.min}} to ${{price.max}}</span>
+			</div>	
+		</div>
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Arrival Time</span>
+			</div>
+			<div class="column small-12">
+				<rzslider class="flyingbye-slider"  rz-slider-model="arrival.min" rz-slider-high="arrival.max" rz-slider-options="arrival.options"></rzslider>
+			</div>
+			<div class="column small-12">
+				<span class="filter-values">{{formatTimeOfDay(arrival.min)}} to {{formatTimeOfDay(arrival.max)}}</span>
+			</div>
+		</div>
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Layover Duration</span>
+			</div>
+			<div class="column small-12">
+				<rzslider class="flyingbye-slider" rz-slider-model="layoverDuration.value" rz-slider-options="layoverDuration.options"></rzslider>
+			</div>
+			<div class="column small-12">
+				<span class="filter-values">Max: {{formatMinutesElapsed(layoverDuration.value)}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="row align-top">
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Layovers</span>
+			</div>
+			<div class="column small-12">
+				<div ng-repeat="stops in layoverCount">
+					<input type="radio" name="layover" ng-model='layovers' value="{{stops}}" ng-change="filterByLayoverCount()"><label class="filter-labels" for="layover">{{stops}}</label>
+				</div>
+			</div>	
+		</div>	
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Departure Time</span>
+			</div>
+			<div class="column small-12">
+				<rzslider class="flyingbye-slider"  rz-slider-model="departure.min" rz-slider-high="departure.max" rz-slider-options="departure.options"></rzslider>
+			</div>
+			<div class="column small-12">
+				<span class="filter-values">{{formatTimeOfDay(departure.min)}} to {{formatTimeOfDay(departure.max)}}</span>
+			</div>
+		</div>	
+		<div class="column small-4">
+			<div class="column small-12">
+				<span class="input-label">Flight Duration</span>
+			</div>
+			<div class="column small-12">
+				<rzslider class="flyingbye-slider"  rz-slider-model="flightDuration.min"  rz-slider-high="flightDuration.max" rz-slider-options="flightDuration.options"></rzslider>
+			</div>
+			<div class="column small-12">
+				<span class="filter-values">Min: {{formatMinutesElapsed(flightDuration.min)}} Max: {{formatMinutesElapsed(flightDuration.max)}}</span>
+			</div>
+		</div>
+	</div>
+</div>

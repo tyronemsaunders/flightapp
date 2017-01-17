@@ -4,7 +4,10 @@
   position: relative;
   > div {
     position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0;
   }
 }
 
@@ -12,34 +15,97 @@
   visibility: hidden;
 }
 
-#main-content {
-  position: relative;
-  width: 100%;
-  top: 0;
+.disabled-element {
+  pointer-events: none; 
+  opacity:0.4;
 }
 
 .text-mark {
   font-size: 24px;
-  color: #DDDDDD;
+  color: white;
   letter-spacing: .01rem;
   line-height: 1.25;
-  font-family: Montserrat,sans-serif;
-  padding: 1rem;
+  font-family: Montserrat, sans-serif;
+  padding: .25rem;
   text-decoration: none;
-  a:link {
-    color: #DDDDDD;
-    text-decoration: none;
+}
+
+.tagline {
+  font-size: 18px;
+  color: $secondary-gray;
+  letter-spacing: .01rem;
+  line-height: 1.25;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: .01rem;
+}
+
+.peel-layer {
+  >div {
+    height: inherit;
   }
-  a:visited {
-    color: #DDDDDD;
-    text-decoration: none;
+}
+
+#main-offcanvas {
+  background-color: $matte;
+}
+
+.overlay-offcanvas {
+  position: fixed;
+  height: 100%;
+  width: 50%;
+  background: $matte;
+  z-index: 5000;
+  transform: translateX(200%);
+  transition: transform ease .25s;
+  &.is-active {
+    transform: translateX(100%);
   }
-  a:hover {
-    color: darken(#DDDDDD, 15%);
-    text-decoration: none;
+}
+
+.flyingbye-slider {
+  &.rzslider {
+    margin: 0;
+    .rz-bar {
+      background-color: $gold;
+      height: 2px; 
+    }
+    .rz-selection {
+      background-color: $midnight;
+    }
+    .rz-pointer {
+      background-color: $midnight;
+      width: .75rem;
+      height: .75rem;
+      top: auto;
+      bottom: -2px;
+    }
+    .rz-pointer:after {
+      display: none;
+    }
+    .rz-bubble {
+      display: none;
+    }
+    
   }
-  a:active {
-    color: darken(#DDDDDD, 15%);
-    text-decoration: none;
+}
+
+.loading-spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5000;
+  pointer-events: none;
+  img {
+    display: block;
+    position: relative;
+    top: calc(50% - 5px);
+    left: calc(50% - 25px);
   }
+}
+
+.capitalize {
+   text-transform: capitalize;
 }
