@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.factory('flightsQuery', flightsQuery);
 
 flightsQuery.$inject = ['$rootScope', '$resource', '$q', 'flightsQueryForm',  'skypickerFlightsQuery'];

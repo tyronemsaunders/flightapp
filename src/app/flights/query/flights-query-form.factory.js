@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.factory('flightsQueryForm', flightsQueryForm);
 
 flightsQueryForm.$inject = ['$window', '$rootScope'];

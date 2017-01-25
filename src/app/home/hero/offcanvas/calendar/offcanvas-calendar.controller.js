@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.home')
+	.module('flightApp.home')
 	.controller('OffcanvasCalendarController', OffcanvasCalendarController);
 
 OffcanvasCalendarController.$inject = ['$scope', '$window', 'flightsQueryForm'];

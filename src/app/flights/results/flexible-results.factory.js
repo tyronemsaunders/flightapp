@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.factory('flexibleFlightResults', flexibleFlightResults);
 
 flexibleFlightResults.$inject = ['$rootScope', '$window', 'flightsQuery', 'flightsQueryForm', 'spinnerService'];

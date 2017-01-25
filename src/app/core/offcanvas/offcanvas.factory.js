@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.core')
+	.module('flightApp.core')
 	.factory('offcanvas', offcanvas);
 
 //offcanvas.$inject = [''];

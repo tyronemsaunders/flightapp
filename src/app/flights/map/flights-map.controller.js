@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.controller('FlightsMapController', FlightsMapController);
 
 FlightsMapController.$inject = ['$window', '$scope', '$state', '$stateParams', '$timeout', 'offcanvas', 'flightsMap', 'flightsQueryForm', 'spinnerService'];

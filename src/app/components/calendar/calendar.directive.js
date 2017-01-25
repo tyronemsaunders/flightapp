@@ -5,7 +5,7 @@
  */
 
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.directive('calendar', calendar);
 
 // directive factory function returns an object with options to tell $compile how the directive should behave

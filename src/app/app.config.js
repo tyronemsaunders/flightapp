@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.config(appConfig);
 
 //$inject is used to manually identify dependences to safeguard agains minification issues and avoid creating long list of inline dependencies

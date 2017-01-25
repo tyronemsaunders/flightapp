@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.controller('FlightQueryController', FlightQueryController);
 
 FlightQueryController.$inject = ['$scope', '$window', '$state', 'flightsQueryForm', 'flightsQuery', 'flexibleFlightResults', 'airportsList', 'spinnerService'];

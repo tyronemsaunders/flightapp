@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.run(appRunBlock);
 
 function appRunBlock() {

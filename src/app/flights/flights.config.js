@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.config(flightsConfig);
 
 flightsConfig.$inject = ['$stateProvider'];

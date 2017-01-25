@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.core', [
+	.module('flightApp.core', [
 		/* Angular modules */
 		'ngResource',
 		'ngAnimate',

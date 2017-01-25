@@ -1,11 +1,10 @@
 angular
-	.module('flyingBye', [
+	.module('flightApp', [
 		/* Shared modules */
-		'flyingBye.core',
+		'flightApp.core',
 		
 		/* Feature areas */
-		'flyingBye.home',
-		'flyingBye.about',
-		'flyingBye.flights',
-		'flyingBye.places'
+		'flightApp.home',
+		'flightApp.flights',
+		'flightApp.places'
 ]);	

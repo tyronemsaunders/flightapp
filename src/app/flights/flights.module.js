@@ -13,6 +13,6 @@
  * specified, as shown below.
  */
 angular
-	.module('flyingBye.flights', [
-		'flyingBye.core'
+	.module('flightApp.flights', [
+		'flightApp.core'
 ]);

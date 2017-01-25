@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.places')
+	.module('flightApp.places')
 	.factory('cities', cities);
 
 cities.$inject = ['$resource', '$filter', '$q','helpers'];

@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.controller('HomeHeroController', HomeHeroController);
 
 HomeHeroController.$inject = ['$scope', 'offcanvas'];

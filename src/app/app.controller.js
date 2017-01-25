@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.controller('AppController', AppController);
 
 AppController.$inject = ['$scope', '$state', 'appBootstrapFactory', 'userLocation', 'flightsQueryForm', 'airportsList', 'flightsQuery', 'flightsMap', 'spinnerService'];
@@ -14,7 +14,7 @@ function AppController($scope, $state, appBootstrapFactory, userLocation, flight
 				.then(setGlobalAirports)
 				.then(locationBasedFlightQuery)
 				.then(bootstrapFlightsMap)
-				//.catch(errorHandler)
+				.catch(errorHandler)
 				.finally(finalHandler);	
 		}
 	}
@@ -33,7 +33,6 @@ function AppController($scope, $state, appBootstrapFactory, userLocation, flight
 	
 	function locationBasedFlightQuery() {
 		return flightsQuery.getFlights().then(function(flights) {
-			console.log("Bootstrapping flights query returned: " +  flights.length + " flights");
 			flightsQuery.setFlights(flights);
 			appBootstrapFactory.broadcastFlightBootstrapping(true);
 			return flights;	
@@ -42,7 +41,6 @@ function AppController($scope, $state, appBootstrapFactory, userLocation, flight
 	
 	function bootstrapFlightsMap() {
 		return flightsMap.init().then(function(map) {
-			console.log("Map initiatied");
 			appBootstrapFactory.setMapStatus(true);
 		})
 		.catch(function(e) {
@@ -61,14 +59,13 @@ function AppController($scope, $state, appBootstrapFactory, userLocation, flight
 	
 	function finalHandler() {
 		appBootstrapFactory.bootstrapped = true
-		console.log("Finished bootstrapping");
 	}
 	
 	init();
 	
 	$scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 		if (angular.isDefined(toState.data.pageTitle)) {
-			$scope.pageTitle = toState.data.pageTitle + ' | Flying Bye' ;
+			$scope.pageTitle = toState.data.pageTitle + ' | Flight App' ;
 		}
 	});
 }

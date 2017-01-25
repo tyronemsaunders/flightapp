@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.core')
+	.module('flightApp.core')
 	.factory('userLocation', userLocation);
 
 userLocation.$inject = ['$window', '$q', '$resource', 'helpers', 'cities', 'airportsList'];

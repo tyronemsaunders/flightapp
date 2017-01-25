@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.factory('flightsMap', flightsMap);
 
 flightsMap.$inject = ['$rootScope', '$window', '$state', '$q', '$compile', '$templateCache', '$timeout', 'offcanvas', 'airportsList', 'flightsQueryForm', 'flightsQuery', 'flexibleFlightResults', 'spinnerService'];

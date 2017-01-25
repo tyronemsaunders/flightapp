@@ -1,6 +1,6 @@
 {
-  "name": "flyingbye",
-  "description": "Dependencies for flyingBye",
+  "name": "flightApp",
+  "description": "Dependencies for flightApp",
   "main": "app.js",
   "authors": [
     "Tyrone Saunders"

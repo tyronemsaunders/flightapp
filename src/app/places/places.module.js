@@ -1,4 +1,4 @@
 angular
-	.module('flyingBye.places', [
-		'flyingBye.core'
+	.module('flightApp.places', [
+		'flightApp.core'
 ]);

@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye')
+	.module('flightApp')
 	.controller('HomeHeroSidebarController', HomeHeroSidebarController);
 
 HomeHeroSidebarController.$inject = ['$scope', '$window', '$state', '$timeout', 'flightsQueryForm', 'flightsQuery', 'flexibleFlightResults' ,'flightsMap', 'airportsList'];

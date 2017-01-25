@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.core')
+	.module('flightApp.core')
 	.factory('appBootstrapFactory', appBootstrapFactory);
 
 appBootstrapFactory.$inject = ['$rootScope', '$timeout'];

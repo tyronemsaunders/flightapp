@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.home')
+	.module('flightApp.home')
 	.controller('HomeHeroContentController', HomeHeroContentController);
 
 HomeHeroContentController.$inject = ['$scope', '$state', 'helpers', 'offcanvas', 'appBootstrapFactory', 'flightsQuery'];

@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.home')
+	.module('flightApp.home')
 	.controller('OffcanvasFlightResultsController', OffcanvasFlightResultsController);
 
 OffcanvasFlightResultsController.$inject = ['$scope', '$state', 'offcanvas', 'displayedFlightResults', 'spinnerService'];

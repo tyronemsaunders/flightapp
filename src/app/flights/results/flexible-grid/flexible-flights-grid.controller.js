@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.controller('FlexibleFlightsGridController', FlexibleFlightsGridController);
 
 FlexibleFlightsGridController.$inject = ['$scope', '$window', '$timeout', 'flexibleFlightResults', 'flightsQueryForm', 'displayedFlightResults', 'spinnerService'];

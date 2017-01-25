@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.home')
+	.module('flightApp.home')
 	.config(homeConfig);
 
 homeConfig.$inject = ['$stateProvider'];

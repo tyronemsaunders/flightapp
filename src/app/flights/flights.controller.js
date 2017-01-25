@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.controller('FlightsController', FlightsController);
 
 FlightsController.$inject = [];

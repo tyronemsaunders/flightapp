@@ -1,5 +1,5 @@
 angular
-	.module('flyingBye.flights')
+	.module('flightApp.flights')
 	.controller('FlightsSearchController', FlightsSearchController);
 
 FlightsSearchController.$inject = ['$scope', '$location', '$timeout', '$anchorScroll', 'flightsMap', 'displayedFlightResults', 'spinnerService'];
