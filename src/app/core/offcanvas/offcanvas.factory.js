@@ -10,6 +10,7 @@ function offcanvas() {
 	offcanvas.toggle = toggleOffcanvas;
 	offcanvas.show = showOffcanvas;
 	offcanvas.hide = hideOffcanvas;
+	offcanvas.welcomeHidden = false;
 	
 	function toggleOffcanvas() {
 		offcanvas.visible = !offcanvas.visible;

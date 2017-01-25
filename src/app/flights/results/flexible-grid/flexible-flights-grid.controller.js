@@ -2,17 +2,16 @@ angular
 	.module('flyingBye.flights')
 	.controller('FlexibleFlightsGridController', FlexibleFlightsGridController);
 
-FlexibleFlightsGridController.$inject = ['$scope', '$state', '$window', 'flexibleFlightResults'];
+FlexibleFlightsGridController.$inject = ['$scope', '$window', '$timeout', 'flexibleFlightResults', 'flightsQueryForm', 'displayedFlightResults', 'spinnerService'];
 
-function FlexibleFlightsGridController($scope, $state, $window, flexibleFlightResults) {
+function FlexibleFlightsGridController($scope, $window, $timeout, flexibleFlightResults, flightsQueryForm, displayedFlightResults, spinnerService) {
 	
-	$scope.init = init;
+	$scope.rendered;
+	
 	$scope.selectedDate = {};
-	$scope.hoveredDate = {}
+	$scope.hoveredDate = {};
 	$scope.journeys = [];
 	$scope.returnDates = [];
-	$scope.flexible;
-	$scope.flights;
 	
 	$scope.selectDate = selectDate;
 	$scope.mouseoverDate = mouseoverDate;
@@ -22,32 +21,48 @@ function FlexibleFlightsGridController($scope, $state, $window, flexibleFlightRe
 	$scope.isSelected = isSelected;
 	$scope.isReturnDate = isReturnDate;
 	$scope.isOutboundDate = isOutboundDate;
+	$scope.noFlights = noFlights;
 	
 	function init() {
-		$scope.flexible = ['-3', '-2', '-1', '0', '+1', '+2', '+3'];
-		$scope.flights = flexibleFlightResults.flights;	
-		$scope.selectedDate.outboundDiff = flexibleFlightResults.selected.outboundDiff;
-		$scope.selectedDate.returnDiff = flexibleFlightResults.selected.returnDiff;
+		$scope.selectedDate.outboundDiff = displayedFlightResults.selected.outboundDiff;
+		$scope.selectedDate.returnDiff = displayedFlightResults.selected.returnDiff;
 		buildGrid();
 		setReturnDates();
 	}
 	
-	function selectDate(outboundDiff, returnDiff) {
-		$scope.selectedDate.outboundDiff = outboundDiff;
-		$scope.selectedDate.returnDiff = returnDiff;
-		
-		var displayedFlights = $scope.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
-		flexibleFlightResults.setSelected(outboundDiff, returnDiff);
-		flexibleFlightResults.refreshDisplayed(displayedFlights);
-		//$state.reload();
+	function selectDate(outboundDiff, returnDiff, price) {
+		if (price) {
+
+			$scope.selectedDate.outboundDiff = outboundDiff;
+			$scope.selectedDate.returnDiff = returnDiff;
+			
+			if (flexibleFlightResults.flights['outbound' + outboundDiff + 'return' + returnDiff]) {
+				var displayedFlights = flexibleFlightResults.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
+				
+				displayedFlightResults.setSelected(outboundDiff, returnDiff);
+				displayedFlightResults.refreshDisplay(displayedFlights);
+			}
+		}
 	}
 	
-	function mouseoverDate(outboundDiff, returnDiff) {
+	function noFlights(price) {
+		if (price) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	function mouseoverDate(outboundDiff, returnDiff, price) {
 		$scope.hoveredDate.outboundDiff = outboundDiff;
 		$scope.hoveredDate.returnDiff = returnDiff;
 		
-		if (outboundDiff == $scope.hoveredDate.outboundDiff && returnDiff == $scope.hoveredDate.returnDiff) {
-			return true;
+		if (price) {
+			if (outboundDiff == $scope.hoveredDate.outboundDiff && returnDiff == $scope.hoveredDate.returnDiff) {
+				return true;
+			} else {
+				return false;
+			}	
 		} else {
 			return false;
 		}	
@@ -99,47 +114,34 @@ function FlexibleFlightsGridController($scope, $state, $window, flexibleFlightRe
 	}
 	
 	function setReturnDates() {
-		// loop through the outbound flights
-		for (var i = 0; i < $scope.journeys.length; i++) {
-			var trip = $scope.journeys[i];
+		// reset return dates on new query
+		$scope.returnDates = [];
+		
+		for (var i = 0; i < flexibleFlightResults.returnDateDifferences.length; i++) {
 			
-			// for each 
-			for (var j = 0; j < $scope.flexible.length; j++) {
-				
-				for (var k = 0; k < trip['flights'].length; k++) {
-					
-					var flight = trip.flights[k];
-					
-					if (($scope.flexible[j] == flight['return']['difference']) && flight['return']['date']) {
-						var obj = {};
-						obj.date = flight['return']['date'];
-						obj.difference = flight['return']['difference'];
-						
-						// only add unique return dates
-						var unique = true;
-						for (var l = 0; l < $scope.returnDates.length; l++) {
-							// if the current object is found in the $scope array it is not unique
-							if ($scope.returnDates[l].hasOwnProperty('difference') && ($scope.returnDates[l]['difference'] == obj.difference)) {
-								unique = false;	
-							}	
-						}
-						
-						if (unique) {
-							$scope.returnDates.push(obj);
-						}
-					}	
-				} 
-				
-			}
+			var flightReturn = angular.copy(flightsQueryForm['dates']['return']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
+			var diff;
+			var obj = {};
+			
+			diff = flexibleFlightResults.returnDateDifferences[i];
+			
+			obj.difference = diff;
+			obj.date = flightReturn.add(parseInt(diff), 'd');
+			
+			$scope.returnDates.push(obj);
 		}
 		
 		// sort the $scope.returnDates object
 		$scope.returnDates = $scope.returnDates.sort(function(a, b) {
 			return a.date.unix() - b.date.unix()
 		});
+
 	}
 	
 	function buildGrid() {
+		// reset on new query
+		$scope.journeys = [];
+		
 		/**
 		 * build an array of json objects as follows:
 		 * var obj = [{
@@ -150,74 +152,47 @@ function FlexibleFlightsGridController($scope, $state, $window, flexibleFlightRe
 		 *  }]
 		 * }]
 		 */
-		
-		var outboundFlexibleDates = ['-3', '-2', '-1', '0', '+1', '+2', '+3'];
-		var returnFlexibleDates = ['-3', '-2', '-1', '0', '+1', '+2', '+3'];
-		
 		// loop through outbound dates
-		for (var i = 0; i < $scope.flexible.length; i++) {
+		for (var i = 0; i < flexibleFlightResults.outboundDateDifferences.length; i++) {
 			var obj = {};
 			obj.outbound = {};
 			obj.flights = [];
 			
+			var flightOutbound = angular.copy(flightsQueryForm['dates']['outbound']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
+			var diff;
+			
+			diff = flexibleFlightResults.outboundDateDifferences[i];
+			
+			obj.outbound.difference = diff;
+			obj.outbound.date = flightOutbound.add(parseInt(diff), 'd');
+			
 			//loop through return dates
-			for (var j = 0; j < $scope.flexible.length; j++) {
-				if ($scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]]) {
+			for (var j = 0; j < flexibleFlightResults.returnDateDifferences.length; j++) {
+				var flightsObj = {};
+				flightsObj['return'] = {};
+				flightsObj['price'];
+				
+				if (flexibleFlightResults.flights['outbound' + flexibleFlightResults.outboundDateDifferences[i] + 'return' + flexibleFlightResults.returnDateDifferences[j]]) {
 					
-					// check unique outbound
-					if (outboundFlexibleDates.indexOf($scope.flexible[i]) >= 0) {
-						var start = outboundFlexibleDates.indexOf($scope.flexible[i])
-						outboundFlexibleDates.splice(start, 1);
-					}
+					var currentFlights = flexibleFlightResults.flights['outbound' + flexibleFlightResults.outboundDateDifferences[i] + 'return' + flexibleFlightResults.returnDateDifferences[j]];
 					
-					// check unique return
-					if (returnFlexibleDates.indexOf($scope.flexible[j]) >= 0) {
-						var start = returnFlexibleDates.indexOf($scope.flexible[i])
-						returnFlexibleDates.splice(start, 1);
-					}
-					
-					//set the outbound object details
-					if (!obj.outbound.date && !obj.outbound.difference) {
-						obj['outbound']['difference'] = $scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]].dates['outbound']['difference'];
-						obj['outbound']['date'] = $scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]].dates['outbound']['date'];
-					}
-					
-					var flightsObj = {};
-					flightsObj['return'] = {};
-					flightsObj['price'];
-					
-					// flights for flexible date combo
-					var flexFlights = $scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]].data;
-					
-					flightsObj['return']['difference'] = $scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]].dates['return']['difference'];
-					flightsObj['return']['date'] = $scope.flights['outbound' + $scope.flexible[i] + 'return' + $scope.flexible[j]].dates['return']['date'];
-					flightsObj['price'] = flightPriceRange(flexFlights);
+					flightsObj['return']['difference'] = currentFlights.dates['return']['difference'];
+					flightsObj['return']['date'] = currentFlights.dates['return']['date'];
+					flightsObj['price'] = flightPriceRange(currentFlights.data);
 					
 					obj.flights.push(flightsObj);
 				} else {
-					// flight combination was not returned
-					var flightsObj = {};
-					flightsObj['return'] = {};
-					flightsObj['price'];
 					
 					// undefined values allow printing blank box
-					flightsObj['return']['difference'] = $scope.flexible[j];
-					flightsObj['return']['date'] = '';
-					flightsObj['price'] = '';
+					flightsObj['return']['difference'] = flexibleFlightResults.returnDateDifferences[j];
+					flightsObj['return']['date'] = null;
+					flightsObj['price'] = null;
 
 					obj.flights.push(flightsObj);
 				}
 			}
+	
 			$scope.journeys.push(obj);
-		}
-		
-		// remove missing dates from the journeys object
-		for (var i; i < $scope.journeys.length; i++) {
-			for (var j; j < $scope.journeys[i].flights.length; j++) {
-				if (returnFlexibleDates.indexOf($scope.journeys[i].flights[j]['return']['difference']) >= 0) {
-					//$scope.journeys[i].flights.splice(j, 1);
-				}
-			}
 		}
 	}
 	
@@ -239,5 +214,18 @@ function FlexibleFlightsGridController($scope, $state, $window, flexibleFlightRe
 		return range;
 	}
 	
-	$scope.init();
+	function initializeLoadingSpinner() {
+		$timeout(function() {
+			spinnerService.show('flexibleGridSpinner');	
+		});
+	}
+	
+	///// Broadcast listener functions
+	function setActiveFlights(evt, val) {
+		init();
+		spinnerService.hide('flexibleGridSpinner');
+	}
+	
+	initializeLoadingSpinner();
+	$scope.$on('setActiveFlights', setActiveFlights);
 }

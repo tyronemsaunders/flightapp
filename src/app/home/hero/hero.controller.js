@@ -2,9 +2,9 @@ angular
 	.module('flyingBye')
 	.controller('HomeHeroController', HomeHeroController);
 
-HomeHeroController.$inject = ['$scope', '$state', '$window', 'offcanvas'];
+HomeHeroController.$inject = ['$scope', 'offcanvas'];
 
-function HomeHeroController($scope, $state, $window, offcanvas) {
+function HomeHeroController($scope, offcanvas) {
 	$scope.offcanvasVisible = offcanvasVisible;
 
 	function offcanvasVisible() {

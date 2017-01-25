@@ -1,13 +1,28 @@
+.flexible-flights-grid-container, .flights-search-flexible-grid {
+  position: relative; 
+  margin-bottom: .5rem;
+}
+
 .flexible-grid-container {
   display: block;
   box-sizing: border-box;
-  background: white;
+  background-color: white;
   width: 100%;
-  //border: solid 1px $gold;
   
   div.flexible-grid-header-row {
     background: white;
     color: $active-black;
+    
+    div.flexible-grid-legend {
+      font-size: .5rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      text-align: center;
+      color: inherit;
+      height: 2.25rem;
+    }
     
     div.flexible-grid-column-header {
       font-size: .75rem;
@@ -17,14 +32,16 @@
       box-sizing: border-box;
       text-align: center;
       color: inherit;
+      height: 2.25rem;
+      border-left: solid 1px $gold;
       
       &.hovered {
-        background: $gold;
+        background-color: $gold;
         color: white;
       }
       
       &.selected {
-        background: $gold;
+        background-color: $gold;
         color: white;
       }
     }
@@ -44,15 +61,23 @@
       text-transform: uppercase;
       box-sizing: border-box;
       text-align: center;
-      background: white;
+      background-color: white;
       color: $active-black;
+      height: 2.25rem;
+      
+      .day-label {
+        font-size: .75rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        color: $secondary-gray;
+      }
       
       &.hovered {
-        background: $gold;
+        background-color: $gold;
         color: white;
       }
       &.selected {
-        background: $gold;
+        background-color: $gold;
         color: white;
       }
     }
@@ -68,19 +93,25 @@
         font-family: 'Open Sans', sans-serif;
         font-size: 0.75rem;
         text-align: center;
-        background: white;
+        background-color: white;
         cursor: pointer;
         color: $active-black;
+        height: 2.25rem;
         padding-top: 9px;
         padding-bottom: 9px;
         
         &.selected {
-          background: $gold;
+          background-color: $gold;
           color: white;
         }
         &.hovered {
-          background: $gold;
+          background-color: $gold;
           color: white;
+        }
+        &.not-available {
+          background-color: $midnight;
+          color: white;
+          cursor: default;
         }
       } 
     }    

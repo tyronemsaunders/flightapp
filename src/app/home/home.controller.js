@@ -2,9 +2,9 @@ angular
 	.module('flyingBye.home')
 	.controller('HomeController', HomeController);
 
-HomeController.$inject = ['$scope', '$state'];
+HomeController.$inject = [];
 
-function HomeController($scope, $state) {	
-	$state.go('app.home.hero');
+function HomeController() {	
+
 }
 

@@ -27,8 +27,31 @@ function OffcanvasCalendarController($scope, $window, flightsQueryForm) {
 		$scope.hideReturnCalendar = true;
 	}
 	
+	function returnCalendarStatus() {
+		if (flightsQueryForm.flightType == 'round' && flightsQueryForm.dates.outbound.selected) {
+			$scope.hideReturnCalendar = false;
+		} else {
+			$scope.hideReturnCalendar = true;
+		}
+	}
+	
+	///// Broadcast listeners
+	function flightDateSet(evt, date, leg, errorMsg) {
+		if (errorMsg) {
+			$scope['errors']['dates'][leg] = errorMsg;
+		} else {
+			$scope['dates'][leg]['date'] = date;
+		}
+		
+		returnCalendarStatus();
+	}
+	
 	$scope.init();
 	
+	// watch for changes to the flightsQueryForm
+	$scope.$on('flightDateSet', flightDateSet);
+	
+	//use watches because ng-model is not being used on the calendar directive
 	$scope.$watch('dates.outbound.date', function(newValue, oldValue) {
 		if (newValue) {
 			flightsQueryForm.setFlightDate(newValue, 'outbound');
@@ -44,16 +67,4 @@ function OffcanvasCalendarController($scope, $window, flightsQueryForm) {
 			$scope['errors']['dates']['return'] = flightsQueryForm['errors']['dates']['return'];	
 		}
 	});
-	
-	// watch for changes to the flightsQueryForm
-	$scope.$watch(
-		function() {return flightsQueryForm;},
-		function(newFlightsQueryForm, oldFlightsQueryForm) {	
-			// check the flight type to control the display of the return trip calendar
-			if (newFlightsQueryForm.flightType == 'round' && newFlightsQueryForm.dates.outbound.selected) {
-				$scope.hideReturnCalendar = false;
-			} else {
-				$scope.hideReturnCalendar = true;
-			}
-		}, true);
 }

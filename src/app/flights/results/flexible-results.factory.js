@@ -2,266 +2,192 @@ angular
 	.module('flyingBye.flights')
 	.factory('flexibleFlightResults', flexibleFlightResults);
 
-flexibleFlightResults.$inject = ['$window', '$filter', 'flightsQuery', 'flightsQueryForm'];
+flexibleFlightResults.$inject = ['$rootScope', '$window', 'flightsQuery', 'flightsQueryForm', 'spinnerService'];
 
-function flexibleFlightResults($window, $filter, flightsQuery, flightsQueryForm) {
-	var flightOutbound = flightsQueryForm['dates']['outbound']['date'].hour(12).minutes(0).seconds(0).milliseconds(0);
-	var flightReturn = flightsQueryForm['dates']['return']['date'].hour(12).minutes(0).seconds(0).milliseconds(0);
+function flexibleFlightResults($rootScope, $window, flightsQuery, flightsQueryForm, spinnerService) {
 	
 	var results = {};
 	
-	results.flights = {};
-	results.displayed;
-	results.selected = {};
-	results.selected.outboundDiff;
-	results.selected.returnDiff;
+	results.init = init;
 	
-	results.setSelected = setSelected;
-	results.priceRange = priceRange;
-	results.flightDuration = flightDuration;
-	results.layoverCount = layoverCount;
-	results.layoverDuration = layoverDuration;
-	results.refreshDisplayed = refreshDisplayed;
+	results.flights = {};
+	
+	results.minReturnDate;
+	results.minOutboundDate;
+	results.maxReturnDate;
+	results.maxOutboundDate;
+	
+	results.outboundDateDifferences = [];
+	results.returnDateDifferences = [];
+	
+	results.initializeFlights = initializeFlights;
+	results.refresh = refresh;
 	
 	function init() {
 		initializeFlights();
-		
-		// initialized the displayed list of flights
-		if (results.flights['outbound0return0']) {
-			// try to start with the selected flight
-			results.selected.outboundDiff = '0';
-			results.selected.returnDiff = '0';
-			refreshDisplayed(results.flights['outbound' + results.selected.outboundDiff + 'return' + results.selected.returnDiff].data);
-		} else {
-			// start with the first date
-			results.selected.outBoundDiff = results.flights[Object.keys(results.flights)[0]].dates['outbound']['difference'];
-			results.selected.returnDiff = results.flights[Object.keys(results.flights)[0]].dates['return']['difference'];
-			refreshDisplayed(results.flights['outbound' + results.selected.outboundDiff + 'return' + results.selected.returnDiff].data);
-		}
+		setFlexibleDateDifferences();
+		// broadcast the initialization of the flexible results
+		$rootScope.$broadcast('initializedFlexibleResults', true);
 	}
 	
 	function initializeFlights() {
+		// reset the flights object for every new query to prevent pushing new flights onto an array of old flights
+		results.flights = {};
+		// reset the travel date extremes for every new query to prevent references from exisiting return dates from influencing the new query
+		results.minOutboundDate = null;
+		results.maxOutboundDate = null;
+		results.minReturnDate = null;
+		results.maxReturnDate = null;
+		
+		///////////////////////////////////////////////////////////////////////////
+		// set the minimum and maximum travel dates
+		// add flights to an object that has keys representing the minimum and maximum travel day combinations
+		///////////////////////////////////////////////////////////////////////////
+		
+		var flightOutbound = angular.copy(flightsQueryForm['dates']['outbound']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
+		var flightReturn = angular.copy(flightsQueryForm['dates']['return']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
 		
 		for (var i = 0; i < flightsQuery.flights.length; i++) {
-			var outboundDate = function() {
-				var obj = {};
-				
-				var flexibleDate = $window.moment.unix(flightsQuery.flights[i].outbound_flight_time.departure_local).hour(12).minutes(0).seconds(0).milliseconds(0);
-				obj.date = flexibleDate;
-				
-				if (flexibleDate.diff(flightOutbound) > 0) {
-					obj.difference = '+' + flexibleDate.diff(flightOutbound, 'days');
-				} else {
-					obj.difference = flexibleDate.diff(flightOutbound, 'days');
-				}
-				
-				return obj;
-			};
 			
-			var returnDate = function() {
-				var obj = {};
-				var flexibleDate = $window.moment.unix(flightsQuery.flights[i].return_flight_time.departure_local).hour(12).minutes(0).seconds(0).milliseconds(0);
-				obj.date = flexibleDate;
-				
-				if (flexibleDate.diff(flightReturn) > 0) {
-					obj.difference = '+' + flexibleDate.diff(flightReturn, 'days');
-				} else {
-					obj.difference = flexibleDate.diff(flightReturn, 'days');
-				}
-				
-				return obj;
-			};
+			// get the unix time stamp for the travel dates
+			var outboundTravelDate = flightsQuery.flights[i].outbound_flight_time.departure_local;
+			var returnTravelDate = flightsQuery.flights[i].return_flight_time.departure_local;
 			
-			var outboundDate = outboundDate();
-			var returnDate = returnDate();
+			// create an object that holds the date as a momentjs object and the the +/- day difference from the originally selected flight
+			var outboundDateObj = generateOutboundDateObj(outboundTravelDate);
+			var returnDateObj = generateReturnDateObj(returnTravelDate);
 			
-			if (!results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference]) {
+			
+			// initialize the +/- day difference property on the flights object
+			if (!results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference]) {
 				// initialize the flexible results object
-				results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference] = {};
-				results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference].dates = {};
-				results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference].data = []
-				
+				results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference] = {};
+				results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference].dates = {};
+				results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference].data = [];
 			}
 			
-			results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference].dates['outbound'] = outboundDate;
-			results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference].dates['return'] = returnDate;
-			results.flights['outbound' + outboundDate.difference + 'return' + returnDate.difference].data.push(flightsQuery.flights[i]);
-		}
-	}
-	
-	function setSelected(outboundDiff, returnDiff) {
-		results.selected.outboundDiff = outboundDiff;
-		results.selected.returnDiff = returnDiff;
-	}
-	
-	function priceRange() {
-		var outboundDiff = results.selected.outboundDiff;
-		var returnDiff = results.selected.returnDiff;
-		var flights = results.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
-		
-		var range = {};
-		range['min'] = flights[0].price;
-		range['max']= flights[0].price;
-		
-		for (var i = 0; i < flights.length; i++) {
-			if (flights[i].price < range['min']) {
-				range['min'] = flights[i].price; 
-			}
+			results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference].dates['outbound'] = outboundDateObj;
+			results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference].dates['return'] = returnDateObj;
+			results.flights['outbound' + outboundDateObj.difference + 'return' + returnDateObj.difference].data.push(flightsQuery.flights[i]);
 			
-			if (flights[i].price > range['max']) {
-				range['max'] = flights[i].price; 
-			}
+			// setup the minimum and maximum flexible dates (+/- travel days to search)
+			setOutboundDateExtremes(outboundTravelDate);
+			setReturnDateExtremes(returnTravelDate);
 		}
 		
-		return range;
-	}
-	
-	function flightDuration() {
-		var outboundDiff = results.selected.outboundDiff;
-		var returnDiff = results.selected.returnDiff;
-		var flights = results.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
-		
-		var range = {};
-		range['min'] = flights[0].duration_minutes.outbound;
-		range['max'] = flights[0].duration_minutes.outbound;
-		
-		for (var i = 0; i < flights.length; i++) {
-			if (flights[i]['duration_minutes']['outbound'] < range['min']) {
-				range['min'] = flights[i]['duration_minutes']['outbound'];
-			}
+		function generateOutboundDateObj(travelDate) {
+			var obj = {};
 			
-			if (flights[i]['duration_minutes']['return'] < range['min']) {
-				range['min'] = flights[i]['duration_minutes']['return'];
-			}
+			var flexibleDate = $window.moment.unix(travelDate).hour(12).minutes(0).seconds(0).milliseconds(0);
+			obj.date = flexibleDate;
 			
-			if (flights[i]['duration_minutes']['outbound'] > range['max']) {
-				range['max'] = flights[i]['duration_minutes']['outbound'];
-			}
-			
-			if (flights[i]['duration_minutes']['return'] > range['max']) {
-				range['max'] = flights[i]['duration_minutes']['return'];
-			}
-		}
-		
-		return range;
-	}
-	
-	function layoverCount() {
-		var outboundDiff = results.selected.outboundDiff;
-		var returnDiff = results.selected.returnDiff;
-		var flights = results.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
-		
-		var range = {};
-		range['min'];
-		range['max'];
-		
-		for (var i = 0; i < flights.length; i++) {
-			
-			if (flights[i].route['outbound'].length == 1) {
-				range['min'] = 0;
-				range['max'] = 0;
+			if (flexibleDate.diff(flightOutbound, 'days') > 0) {
+				obj.difference = '+' + flexibleDate.diff(flightOutbound, 'days');
 			} else {
-				// outbound route has connections
-				if (!range['min']) {
-					range['min'] = flights[i].route['outbound'].length - 1;	
-				} else if (flights[i].route['outbound'].length - 1 < range['min']) {
-					range['min'] = flights[i].route['outbound'].length - 1;	
-				}
-				
-				if (!range['max']) {
-					range['max'] = flights[i].route['return'].length - 1;	
-				} else if (flights[i].route['return'].length - 1 > range['max']) {
-					range['max'] = flights[i].route['return'].length - 1;	
-				}
+				obj.difference = flexibleDate.diff(flightOutbound, 'days');
 			}
 			
-			if (flights[i].route['return'].length == 1) {
-				range['min'] = 0;
-				range['max'] = 0;
+			return obj;
+		}
+		
+		function generateReturnDateObj(travelDate) {
+			var obj = {};
+			var flexibleDate = $window.moment.unix(travelDate).hour(12).minutes(0).seconds(0).milliseconds(0);
+			obj.date = flexibleDate;
+			
+			if (flexibleDate.diff(flightReturn, 'days') > 0) {
+				obj.difference = '+' + flexibleDate.diff(flightReturn, 'days');
 			} else {
-				// return route has connections
-				if (!range['min']) {
-					range['min'] = flights[i].route['return'].length - 1;	
-				} else if (flights[i].route['return'].length - 1 < range['min']) {
-					range['min'] = flights[i].route['return'].length - 1;	
-				}
-				
-				if (!range['max']) {
-					range['max'] = flights[i].route['return'].length - 1;	
-				} else if (flights[i].route['return'].length - 1 > range['max']) {
-					range['max'] = flights[i].route['return'].length - 1;	
-				}
+				obj.difference = flexibleDate.diff(flightReturn, 'days');
+			}
+			
+			return obj;
+		}
+		
+		function setOutboundDateExtremes(travelDate) {
+			var flexibleDate = $window.moment.unix(travelDate).hour(12).minutes(0).seconds(0).milliseconds(0);
+			
+			// set the min outbound date
+			if (!results.minOutboundDate) {
+				results.minOutboundDate = flexibleDate;
+			} else if (flexibleDate.isBefore(results.minOutboundDate)) {
+				results.minOutboundDate = flexibleDate;
+			}
+			
+			// set the max outbound date
+			if (!results.maxOutboundDate) {
+				results.maxOutboundDate = flexibleDate;
+			} else if (flexibleDate.isAfter(results.maxOutboundDate)) {
+				results.maxOutboundDate = flexibleDate;
 			}
 		}
 		
-		return range;
-	}
-	
-	function layoverDuration() {
-		var outboundDiff = results.selected.outboundDiff;
-		var returnDiff = results.selected.returnDiff;
-		var flights = results.flights['outbound' + outboundDiff + 'return' + returnDiff].data;
-		
-		var range = {};
-		range['min'];
-		range['max'];
-		
-		for (var i = 0; i < flights.length; i++) {
+		function setReturnDateExtremes(travelDate) {
+			var flexibleDate = $window.moment.unix(travelDate).hour(12).minutes(0).seconds(0).milliseconds(0);
 			
-			if (flights[i].route['return'].length == 1) {
-				range['min'] = 0;
-				range['max'] = 0;
-			} else {
-				// return route has connections
-				for (var j = 0; j < flights[i].route['return'].length - 1; j++) {
-					
-					var layover = flights[i].route['return'][j + 1].departure_time_local - flights[i].route['return'][j].arrival_time_local;
-					
-					if (!range['min']) {
-						range['min'] = Math.floor(layover / 60);
-					} else if (layover < range['min']) {
-						range['min'] = Math.floor(layover / 60);
-					} 
-					
-					if (!range['max']) {
-						range['max'] = Math.floor(layover / 60);
-					} else if (layover > range['max']) {
-						range['max'] = Math.floor(layover / 60);
-					} 
-				}
+			// set the min return date
+			if (!results.minReturnDate) {
+				results.minReturnDate = flexibleDate;
+			} else if (flexibleDate.isBefore(results.minReturnDate)) {
+				results.minReturnDate = flexibleDate;
 			}
 			
-			if (flights[i].route['outbound'].length == 1) {
-				// for direct flights set the range to 0
-				range['min'] = 0;
-				range['max'] = 0;
-			} else {
-				// outbound route has connections
-				for (var j = 0; j < flights[i].route['outbound'].length - 1; j++) {
-					var layover = flights[i].route['outbound'][j + 1].departure_time_local - flights[i].route['outbound'][j].arrival_time_local;
-					
-					if (!range['min']) {
-						range['min'] = Math.floor(layover / 60);
-					} else if (layover < range['min']) {
-						range['min'] = Math.floor(layover / 60);
-					} 
-					
-					if (!range['max']) {
-						range['max'] = Math.floor(layover / 60);
-					} else if (layover > range['max']) {
-						range['max'] = Math.floor(layover / 60);
-					} 
-				}
+			// set the max outbound date
+			if (!results.maxReturnDate) {
+				results.maxReturnDate = flexibleDate;
+			} else if (flexibleDate.isAfter(results.maxReturnDate)) {
+				results.maxReturnDate = flexibleDate;
 			}
 		}
-		return range;
 	}
 	
-	function refreshDisplayed(flights) {
-		results.displayed = flights;
+	function setFlexibleDateDifferences() {
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// create an array that represents the minimum and maximum flexible date day differences
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+		// for every new query reset the flexible dates array to prevent the existing query from influencing the new query
+		results.outboundDateDifferences = [];
+		results.returnDateDifferences = [];
+		
+		var flightOutbound = angular.copy(flightsQueryForm['dates']['outbound']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
+		var flightReturn = angular.copy(flightsQueryForm['dates']['return']['date'].hour(12).minutes(0).seconds(0).milliseconds(0));
+		
+		// create an array out of the minimum and maximum flexible date day differences
+		for (var i = angular.copy(results.minOutboundDate); i.isSameOrBefore(results.maxOutboundDate, 'day'); i = i.add(1, 'd')) {
+			
+			if (i.diff(flightOutbound, 'days') > 0) {
+				results.outboundDateDifferences.push('+' + i.diff(flightOutbound, 'days'));
+			} else {
+				results.outboundDateDifferences.push(i.diff(flightOutbound, 'days'));
+			}
+		}
+		
+		for (var j = angular.copy(results.minReturnDate); j.isSameOrBefore(results.maxReturnDate, 'day'); j = j.add(1, 'd')) {
+			
+			if (j.diff(flightReturn, 'days') > 0) {
+				results.returnDateDifferences.push('+' + j.diff(flightReturn, 'days'));
+			} else {
+				results.returnDateDifferences.push(j.diff(flightReturn, 'days'));
+			}
+		}
+		
+		if (results.outboundDateDifferences.length > 1) {
+			results.outboundDateDifferences = results.outboundDateDifferences.sort(function(a, b) {
+				return parseInt(a) - parseInt(b);
+			});	
+		}
+		
+		if (results.returnDateDifferences.length > 1) {
+			results.returnDateDifferences = results.returnDateDifferences.sort(function(a, b) {
+				return parseInt(a) - parseInt(b);
+			});	
+		}
 	}
 	
-	init();
+	function refresh() {
+		init();
+	}
 	
 	return results;
 }

@@ -2,9 +2,9 @@ angular
 	.module('flyingBye.flights')
 	.factory('flightsMap', flightsMap);
 
-flightsMap.$inject = ['$rootScope', '$window', '$state', '$q', '$compile', '$templateCache', 'offcanvas', 'airportsList', 'flightsQueryForm', 'flightsQuery', 'spinnerService'];
+flightsMap.$inject = ['$rootScope', '$window', '$state', '$q', '$compile', '$templateCache', '$timeout', 'offcanvas', 'airportsList', 'flightsQueryForm', 'flightsQuery', 'flexibleFlightResults', 'spinnerService'];
 
-function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, offcanvas, airportsList, flightsQueryForm, flightsQuery, spinnerService) {
+function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, $timeout, offcanvas, airportsList, flightsQueryForm, flightsQuery, flexibleFlightResults, spinnerService) {
 	var flightsMap = {};
 	
 	flightsMap.init = init;
@@ -42,6 +42,9 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 		
 		var deferred = $q.defer();
 		deferred.resolve(flightsMap.map);
+		
+		//broadcast map initialization
+		$rootScope.$broadcast('mapInitialized', true);
 		return deferred.promise;
 	}
 	
@@ -80,7 +83,7 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 			iconUrl: 'assets/media/icons/landing-32x32.png',
 			iconSize: [32, 32],
 			iconAnchor: [16, 16],
-			popupAnchor: [16, -2]
+			popupAnchor: [0, -18]
 		});
 		
 		var Destination = $window.L.Marker.extend({
@@ -269,10 +272,12 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 		
 		originMarker.on('unsnap', function(event) {
 			flightsQueryForm.clearAirports('origin');
+			flightsQueryForm.clearAirports('destination');
 		});
 		
 		originMarker.on('snap', function(event) {
 			flightsQueryForm.clearAirports('origin');
+			flightsQueryForm.clearAirports('destination');
 			flightsQueryForm.setAirport(event.layer.options.IATA, 'origin');	
 		});
 		
@@ -291,11 +296,10 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 	
 	function refreshMap(map, flightsLayer) {
 		spinnerService.show('mapSpinner');
-		spinnerService.show('offcanvasResultsSpinner');
 		
 		map = flightsMap.clearMap(map, flightsLayer);
 		
-		var flightsPromise = flightsQuery.getFlightsFromSkypicker();
+		var flightsPromise = flightsQuery.getFlights();
 		flightsPromise
 			.then(function(flights) {
 				flightsQuery.setFlights(flights);
@@ -315,11 +319,13 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 				return flightsMap.map;
 			})
 			.catch(function(err) {
+				console.log('Error in flights map refresh');
 				console.log(err);
 			})
 			.finally(function() {
 				spinnerService.hide('mapSpinner');
-				spinnerService.hide('offcanvasResultsSpinner');
+				//broadcast map refreshed complete
+				$rootScope.$broadcast('mapRefreshed', true);
 			});
 	}
 	
@@ -330,12 +336,29 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 	}
 	
 	function toggleDestinationResults(airport) {
-		//toggle the offcanvas results
-		offcanvas.show();
+		spinnerService.show('mapSpinner');
 		
-		// show offcanvasResultsSpinner
-		spinnerService.show('offcanvasResultsSpinner');
-		
+		// wait for next digest cycle because map has a close click event
+		$timeout(function() {
+			if ($state.includes('app.home')) {
+				// toggle the offcanvas results
+				offcanvas.show();
+				
+				$state.go('app.home.map.results', {}, {reload: false});
+				
+			} else if ($state.includes('app.flights')) {
+				// TODO handle route params for airport and radius city pairs and explicit dates vs stays
+				var routeParams = {};
+				routeParams['city_pair'] = flightsQueryForm['origin']['airports'][0];
+				routeParams['outbound'] = flightsQueryForm['dates']['outbound']['date'].format("YYYY-MM-DD");
+				routeParams['return'] = flightsQueryForm['dates']['return']['date'].format("YYYY-MM-DD");
+				
+				if (!$state.includes('app.flights.search')) {
+					$state.go('app.flights.search', routeParams, {reload: false});	
+				}
+			}
+		});
+
 		// set destination in the flights query form
 		flightsQueryForm.clearAirports('destination');
 		flightsQueryForm.setAirport(airport, 'destination');
@@ -351,18 +374,21 @@ function flightsMap($rootScope, $window, $state, $q, $compile, $templateCache, o
 		flightsQueryForm.setDateRange(dateFrom, dateTo, 'outbound');
 		flightsQueryForm.setDateRange(returnFrom, returnTo, 'return');
 		
+		//broadcast flightsQueryForm complete
+		$rootScope.$broadcast('flightsQueryFormUpdated', true);
+		
 		//run the flights query
-		var flightsPromise = flightsQuery.getFlightsFromSkypicker();
+		var flightsPromise = flightsQuery.getFlights();
 		flightsPromise
 			.then(function(flights) {
 				flightsQuery.setFlights(flights);
-				$state.go('app.home.hero.results');
+				flexibleFlightResults.refresh();
 			})
 			.catch(function(error) {
 				console.log(error);
 			})
 			.finally(function() {
-				spinnerService.hide('offcanvasResultsSpinner');
+				spinnerService.hide('mapSpinner');
 			});
 	}
 	

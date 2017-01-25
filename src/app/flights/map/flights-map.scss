@@ -83,3 +83,38 @@
   padding: .25rem;
   border: solid white .5rem;
 }
+
+.flights-map-spinner {
+  top: 0;
+}
+
+.fullscreen-map, #fullscreen-map {
+  height: 100vh;
+  width: 100vw;
+  
+  #flights-map {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+div.refresh-map-button {
+  position: absolute;
+  z-index: 575;
+  top: .5rem;
+  right: .5rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-right: .75rem;
+  padding-left: .75rem;
+  background-color: $gold;
+  color: white;
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: .02rem;
+  cursor: pointer;
+  &:hover {
+    background-color: darken($gold, 20%);
+  }
+}

@@ -1,14 +1,14 @@
 <div class="hero-welcome" ng-class="{'hide-panel': hidePanel}">
-	<div class="column row align-middle">
-		<div class="column small-4">
+	<div class="row column align-middle">
+		<div class="column small-12 medium-4">
 			<h2 class="tagline">Embrace your randomness</h2>
 		</div>
-		<div class="column small-4">
+		<div class="hide-for-small-only column medium-4">
 			<div class="hero-gif text-center">
 				<img src="assets/media/images/flyingBye-clock.gif" alt="Flying Bye Welcome">
 			</div>
 		</div>
-		<div class="column small-4">
+		<div class="column small-12 medium-4">
 			<div ng-show="located">
 				<span class="hero-location">Say goodbye to <span class="capitalize">{{userCity}}</span></span>
 			</div>
@@ -19,7 +19,7 @@
 			</div>
 		</div>	
 	</div>
-	<div class="map-toggle" ng-class="{'is-hidden': !mapReady}" ng-click="slidePanel()">
+	<div class="hide-for-small-only map-toggle" ng-class="{'is-hidden': !mapReady}" ng-click="slidePanel()">
 		<span class="map-toggle-instruction">Click for flights</span>
 	</div>
 </div>

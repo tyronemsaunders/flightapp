@@ -1,0 +1,21 @@
+<div class="flights-search">
+	<div id="flights-search-map" class="flights-search-map hide-for-small-only">
+		<div ui-view="flights-search-map"></div>
+	</div>
+	<div class="row show-for-small-only">
+		<div class="column small-12 text-center"><a class="flights-search-map-link" ui-sref="app.flights.map({refresh: true})">View Map</a></div>
+	</div>
+	<div class="row flights-search-query">
+		<div class="column small-12" ui-view="flights-search-query"></div>
+	</div>
+	<div id="flights-search-filter" class="flights-search-filter row">
+		<div class="column small-12" ui-view="flights-search-filter"></div>
+	</div>
+	<div id="flights-search-flexible-grid" class="flights-search-flexible-grid row">
+		<div class="column small-12" ui-view="flights-search-flexible-grid"></div>
+	</div>
+	<div id="flights-search-list" class="flights-search-list row collapse">
+		<div class="column small-12" ui-view="flights-search-list"></div>
+	</div>
+	<spinner name="flightsSearchSpinner" class="loading-spinner flights-map-spinner" img-src="assets/media/images/flyingBye-textmark-spinner.gif"></spinner>
+</div>

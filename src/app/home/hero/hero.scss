@@ -1,9 +1,18 @@
 #hero-sidebar {
-  background-color: $matte;  
+  background-color: $matte;
+  overflow-y: scroll;  
 }
 
 #hero-container {
-  @include aspect-ratio(16, 9);
+  /* Small only */
+  @media screen and (max-width: 39.9375em) {
+    @include aspect-ratio(9, 10);
+  }
+  
+  /* Medium and up */
+  @media screen and (min-width: 40em) {
+    @include aspect-ratio(16, 9);
+  }
 }
 
 .hero-sidebar-header {
@@ -251,11 +260,27 @@
   position: relative;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  background-image: url("../../assets/media/images/welcome-9x6.75.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   transition: transform ease .25s;
   z-index: 1500;
+  
+  /* Small only */
+  @media screen and (max-width: 39.9375em) {
+    background-image: url("../../assets/media/images/welcome-9x10.jpg");
+  }
+  
+  /* Medium only */
+  @media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    background-image: url("../../assets/media/images/welcome-16x9.jpg");
+  }
+  
+  /* Large only */
+  @media screen and (min-width: 64em) {
+    background-image: url("../../assets/media/images/welcome-9x6.75.jpg");
+  }
+  
+  
   &.hide-panel {
     transform: translateX(-100%);
   }

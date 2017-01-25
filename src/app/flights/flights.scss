@@ -2,4 +2,24 @@
   position: relative;
   padding: 0.9375rem;
   height: 100%;
+  overflow-y: scroll;
+}
+
+.flights-page {
+  height: 100vh;
+  width: 100vw;
+  background-image: url('../../assets/media/images/flights-page-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-origin: border-box;
+  >div {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .horizontal-flights-query {
+    background-color: white;
+    padding: .5rem;
+  }
 }

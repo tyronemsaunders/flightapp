@@ -1,0 +1,63 @@
+.flights-search {
+  background-color: $matte;
+}
+
+.flights-search-map {
+  @include aspect-ratio(21, 9);
+}
+
+.flights-search-query {
+  .horizontal-flights-query {
+    background-color: white;
+    padding: .5rem;
+  }
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.flights-search-filter {
+  .horizontal-flights-filter {
+    padding: .5rem;
+  }
+}
+
+.flights-search-flexible-grid {
+  background-color: white;
+  .flexible-grid-container {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+  }
+}
+
+.flights-search-list {
+  .flights-list {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+  }
+}
+
+a.flights-search-map-link {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: $active-black;
+  text-decoration: none;
+  padding: .5rem;
+  text-align: center;
+}
+a.flights-search-map-link:link {
+  color: $active-black;
+  text-decoration: none;
+}
+a.flights-search-map-link:visited {
+  color: $active-black;
+  text-decoration: none;
+}
+a.flights-search-map-link:hover {
+  color: $gold;
+  text-decoration: none;
+}
+a.flights-search-map-link:active {
+  color: $gold;
+  text-decoration: none;
+}

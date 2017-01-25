@@ -2,24 +2,25 @@ angular
 	.module('flyingBye')
 	.controller('AppController', AppController);
 
-AppController.$inject = ['$scope', '$location', 'appBootstrapFactory', 'userLocation', 'flightsQueryForm', 'airportsList', 'flightsQuery', 'flightsMap'];
+AppController.$inject = ['$scope', '$state', 'appBootstrapFactory', 'userLocation', 'flightsQueryForm', 'airportsList', 'flightsQuery', 'flightsMap', 'spinnerService'];
 
-function AppController($scope, $location, appBootstrapFactory, userLocation, flightsQueryForm, airportsList, flightsQuery, flightsMap) {
-	
-	$scope.init = init;
+function AppController($scope, $state, appBootstrapFactory, userLocation, flightsQueryForm, airportsList, flightsQuery, flightsMap, spinnerService) {
 	
 	function init() {
-		userLocation.getStoredPosition()
-			.then(prepLocationBasedFlightQueryForm)
-			.then(setGlobalAirports)
-			.then(locationBasedFlightQuery)
-			.then(bootstrapFlightsMap)
-			.catch(errorHandler)
-			.finally(finalHandler);
+		if (!appBootstrapFactory.bootstrapped) {
+			$state.go('app.home.map');
+			userLocation.getStoredPosition()
+				.then(prepLocationBasedFlightQueryForm)
+				.then(setGlobalAirports)
+				.then(locationBasedFlightQuery)
+				.then(bootstrapFlightsMap)
+				//.catch(errorHandler)
+				.finally(finalHandler);	
+		}
 	}
 	
 	function prepLocationBasedFlightQueryForm(location) {
-		appBootstrapFactory.userLocation = location;
+		appBootstrapFactory.setUserLocation(location);
 		return flightsQueryForm.userLocationForm(location);
 	}
 	
@@ -31,30 +32,39 @@ function AppController($scope, $location, appBootstrapFactory, userLocation, fli
 	}
 	
 	function locationBasedFlightQuery() {
-		return flightsQuery.getFlightsFromSkypicker().then(function(flights) {
+		return flightsQuery.getFlights().then(function(flights) {
 			console.log("Bootstrapping flights query returned: " +  flights.length + " flights");
 			flightsQuery.setFlights(flights);
-			appBootstrapFactory.flights = flights;
+			appBootstrapFactory.broadcastFlightBootstrapping(true);
 			return flights;	
 		});
 	}
 	
-	function bootstrapFlightsMap(flights) {
+	function bootstrapFlightsMap() {
 		return flightsMap.init().then(function(map) {
 			console.log("Map initiatied");
-			appBootstrapFactory.mapReady = true;
+			appBootstrapFactory.setMapStatus(true);
 		})
+		.catch(function(e) {
+			console.log("Error bootstrapping flights map");
+			console.log(e);
+		})
+		.finally(function() {
+			spinnerService.hide('mapSpinner');
+		});
 	}
 	
 	function errorHandler(err) {
+		console.log("errors in AppController");
 		console.log(JSON.stringify(err, null, 4));
 	}
 	
 	function finalHandler() {
+		appBootstrapFactory.bootstrapped = true
 		console.log("Finished bootstrapping");
 	}
 	
-	$scope.init();
+	init();
 	
 	$scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 		if (angular.isDefined(toState.data.pageTitle)) {

@@ -1,25 +1,31 @@
-<div class="flexible-grid-container">
+<div class="flexible-grid-container" ng-if="journeys && journeys.length > 0">
 	<div class="flexible-grid-header-row row align-middle">
-		<div class="columns flexible-grid-legend"></div>
+		<div class="columns flexible-grid-legend">
+			<span class="hide-for-small-only">return&rarr;</span><br />
+			<span class="hide-for-small-only">depart &darr;</span>
+		</div>
 		<div class="columns flexible-grid-column-header"
 			ng-class="{selected: isReturnDate(returnDate), hovered: highlightReturnLeg(returnDate)}"
-			ng-repeat="returnDate in returnDates">
-			{{returnDate.date.format("ddd MM/DD")}}
+			ng-repeat="returnDate in returnDates track by $index">
+			<span>{{returnDate.date.format("ddd")}}</span><br />
+			<span>{{returnDate.date.format("MM/DD")}}</span>
 		</div>
 	</div>
 	<div class="flexible-grid-results-row row align-middle"
-		ng-repeat="journey in journeys">
+		ng-repeat="journey in journeys track by $index">
 		<div class="columns flexible-grid-row-header"
 			ng-class="{selected: isOutboundDate(journey.outbound), hovered: highlightOutboundLeg(journey.outbound)}">
-			{{journey.outbound.date.format("ddd MM/DD")}}
+			<span>{{journey.outbound.date.format("ddd")}}</span><br />
+			<span>{{journey.outbound.date.format("MM/DD")}}</span>
 		</div>
 		<div class="columns flexible-grid-result"
-			ng-class="{selected: isSelected(journey.outbound, flight.return)}"
-			ng-mouseover="mouseoverDate(journey.outbound.difference, flight.return.difference)"
+			ng-class="{selected: isSelected(journey.outbound, flight.return), 'not-available': noFlights(flight.price)}"
+			ng-mouseover="mouseoverDate(journey.outbound.difference, flight.return.difference, flight.price)"
 			ng-mouseleave="mouseleaveDate()"
-			ng-click="selectDate(journey.outbound.difference, flight.return.difference)"
-			ng-repeat="flight in journey.flights">
+			ng-click="selectDate(journey.outbound.difference, flight.return.difference, flight.price)"
+			ng-repeat="flight in journey.flights track by $index">
 			{{flight.price.min ? '$' + flight.price.min : 'N/A'}}
 		</div>
 	</div>	
 </div>
+<spinner name="flexibleGridSpinner" class="loading-spinner" img-src="assets/media/images/flyingBye-textmark-spinner.gif"></spinner>

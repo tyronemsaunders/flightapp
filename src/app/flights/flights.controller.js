@@ -2,7 +2,7 @@ angular
 	.module('flyingBye.flights')
 	.controller('FlightsController', FlightsController);
 
-//FlightsController.$inject = [];
+FlightsController.$inject = [];
 
 function FlightsController() {
 

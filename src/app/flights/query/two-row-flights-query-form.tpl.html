@@ -44,10 +44,10 @@
 							<div class="input-label column small-12">Depart on</div>
 						</div>
 						<div class="row align-middle">
-							<div class="text-center date-day column small-6">{{dates.outbound.date.format("DD")}}</div>
+							<div class="text-center date-day column small-6">{{dates.outbound.date ? dates.outbound.date.format("DD") : "DD"}}</div>
 							<div class="column small-6">
-								<div class="date-month">{{dates.outbound.date.format("MMM")}}</div>
-								<div class="date-year">{{dates.outbound.date.format("YYYY")}}</div>
+								<div class="date-month">{{dates.outbound.date ? dates.outbound.date.format("MMM") : "MMM"}}</div>
+								<div class="date-year">{{dates.outbound.date ? dates.outbound.date.format("YYYY") : "YYYY"}}</div>
 							</div>
 						</div>
 						<div selected="dates.outbound.date" datepicker="outbound-datepicker"></div>
@@ -57,10 +57,10 @@
 							<div class="input-label column small-12">Return on</div>
 						</div>
 						<div class="row align-middle">
-							<div class="text-center date-day column small-6">{{dates.return.date.format("DD")}}</div>
+							<div class="text-center date-day column small-6">{{dates.return.date ? dates.return.date.format("DD") : "DD"}}</div>
 							<div class="column small-6">
-								<div class="date-month">{{dates.return.date.format("MMM")}}</div>
-								<div class="date-year">{{dates.return.date.format("YYYY")}}</div>
+								<div class="date-month">{{dates.return.date ? dates.return.date.format("MMM") : "MMM"}}</div>
+								<div class="date-year">{{dates.return.date ? dates.return.date.format("YYYY") : "YYYY"}}</div>
 							</div>
 						</div>
 						<div selected="dates.return.date" datepicker="return-datepicker"></div>
@@ -123,7 +123,7 @@
 	</div>
 	<div class="column small-2 flight-submit">
 		<div class="text-center small-12">
-			<button type="button" class="button" ng-disabled="!formReady()" ng-click="getFlights()">Search</button>
+			<button type="button" class="button" ng-disabled="!formReady" ng-click="getFlights()">Search</button>
 		</div>
 	</div>
 </div>

@@ -2,9 +2,9 @@ angular
 	.module('flyingBye.flights')
 	.factory('flightsQueryForm', flightsQueryForm);
 
-flightsQueryForm.$inject = ['$window'];
+flightsQueryForm.$inject = ['$window', '$rootScope'];
 
-function flightsQueryForm($window) {
+function flightsQueryForm($window, $rootScope) {
 	var form = {};
 	
 	form.oneForCity = false;
@@ -132,6 +132,8 @@ function flightsQueryForm($window) {
 			form.errors.dates[leg] = false;
 			form.dates[leg].selected = true;
 		}
+		
+		$rootScope.$broadcast('flightDateSet', date, leg, errorMsg);
 	}
 	
 	function setDateRange(earliest, latest, leg) {
@@ -229,6 +231,8 @@ function flightsQueryForm($window) {
 			form.passengers.selected = false;
 			form.errors.passengers = "Please select at least one passenger.";
 		}
+		
+		$rootScope.$broadcast('passengersSet', form.errors.passengers);
 	}
 	
 	function userLocationForm(location) {
@@ -237,24 +241,15 @@ function flightsQueryForm($window) {
 		var returnDate = angular.copy(today).add(0, 'w').add(4, 'd');
 		
 		form.clearAirports('origin');
-		//userLocationPromise.then(userLocationSuccess).catch(userLocationError);
-		userLocationSuccess(location);
-		
-		function userLocationSuccess(userLocationData) {
-			form.setAirport(location.airport.IATA, 'origin');
-			form.setFlightType('round');
-			form.setPassengers(1, 0, 0);
-			//form.setCheapestPer(true);
-			form.setFlightDate(outboundDate, 'outbound');
-			form.setFlightDate(returnDate, 'return');
-			form.setDateRange(outboundDate, outboundDate, 'outbound');
-			form.setDateRange(returnDate, returnDate, 'return');
-			return form;
-		}
-		
-		function userLocationError(e) {
-			console.log(JSON.stringify(e, null, 4));
-		}
+
+		form.setAirport(location.airport.IATA, 'origin');
+		form.setFlightType('round');
+		form.setPassengers(1, 0, 0);
+		//form.setCheapestPer(true);
+		form.setFlightDate(outboundDate, 'outbound');
+		form.setFlightDate(returnDate, 'return');
+		form.setDateRange(outboundDate, outboundDate, 'outbound');
+		form.setDateRange(returnDate, returnDate, 'return');
 	}
 	
 	function formReady() {

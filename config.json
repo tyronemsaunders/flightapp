@@ -93,6 +93,7 @@
         "vendor/angular-ui-router/release/angular-ui-router.js",
         "vendor/angular-ui-select/dist/select.js",
         "vendor/angularjs-slider/dist/rzslider.js",
+        "vendor/AngularSlideables/angularSlideables.js",
         "vendor/what-input/what-input.js",
         "vendor/leaflet/dist/leaflet.js",
         "vendor/moment/moment.js",

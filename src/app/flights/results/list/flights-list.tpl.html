@@ -1,48 +1,148 @@
-<div class="row">
-	<ul class="column small-12">
-		<li class="row">
-			<div class="column small-2 results-list-price">
-				<div class="list-price">$100</div>
-				<div class="list-book-button">
-					<button type="button" class="button">Book</button>
-				</div>
-			</div>
-			<div class="results-list-trip column small-10">
-				<div class="row results-list-outgoing-route">
-					<div class="results-list-origin column small-2">
-						<div class="list-date">Fri., Dec. 9, 2016</div>
-						<div class="list-IATA-airport">IAH</div>
-						<div class="list-cityname">Houston, TX</div>
-						<div class="list-time">7:45 PM</div>
-					</div>
-					<div class="results-list-segments column small-8">
-						Segments showing layovers and airlines
-					</div>
-					<div class="results-list-destination column small-2">
-						<div class="list-date">Fri., Dec. 9, 2016</div>
-						<div class="list-IATA-airport">JFK</div>
-						<div class="list-cityname">New York, NY</div>
-						<div class="list-time">11:45 PM</div>
-					</div>
-				</div>
-				<div class="row results-list-return-route">
-					<div class="results-list-origin column small-2">
-						<div class="list-date">Fri., Dec. 9, 2016</div>
-						<div class="list-IATA-airport">JFK</div>
-						<div class="list-cityname">New York, NY</div>
-						<div class="list-time">7:45 PM</div>
-					</div>
-					<div class="results-list-segments column small-8">
-						Segments showing layovers and airlines
-					</div>
-					<div class="results-list-destination column small-2">
-						<div class="list-date">Fri., Dec. 9, 2016</div>
-						<div class="list-IATA-airport">IAH</div>
-						<div class="list-cityname">Houston, TX</div>
-						<div class="list-time">11:45 PM</div>
-					</div>
-				</div>
-			</div>
-		</li>
-	</ul>
+<div class="flights-list-empty" ng-if="flights && flights.length < 1">
+	<h2>Please select a destination from the map to view flights.</h2>
 </div>
+<ul class="flights-list row" ng-if="flights && flights.length > 0">
+	<li class="column small-12" ng-repeat="flight in flights | limitTo: 10">
+		<div class="row align-middle">
+			<div class="flight-info column small-12 medium-10">
+				<div class="flight-direction column small-12" ng-repeat="direction in flight.directions">
+					<div class="row">
+						<div class="column flight-direction-title text-center">
+							<h3>{{direction.type}}</h3>
+						</div>
+					</div>
+					<div class="flight-details row large-unstack align-middle align-justify">
+						<div class="flight-endpoint column small-12 medium-12 large-2">
+							<div class="row">
+								<h4 class="column medium-12">Depart</h4>
+							</div>
+							<div class="flight-endpoint-details row align-middle">
+								<div class="flight-endpoint-icon column medium-3 text-center">
+									<img ng-src="assets/media/icons/takeoff-32x32.png" alt="Departure Airport" />
+								</div>
+								<ul class="column medium-9">
+									<li class="flight-date text-left">{{formatDate(direction.origin.timestamp)}}</li>
+									<li class="flight-time text-left">{{formatTimeOfDay(direction.origin.timestamp)}}</li>
+									<li class="flight-city text-left">{{direction.origin.city}}</li>
+									<li class="flight-airport text-left">{{direction.origin.airport.IATA}}</li>
+								</ul>	
+							</div>
+						</div>
+						<div class="columns" ng-repeat="segment in direction.segments | filter: {type: 'layover'}">
+							<div ng-switch="segment.type">
+								<div class="layover-segment" ng-switch-when="layover">
+									<ul>
+										<li class="layover-time text-center">
+											{{formatSecondsElapsed(segment.duration)}} Layover
+										</li>
+										<li class="layover-icon text-center">
+											<i class="fa fa-clock-o fa-2x" aria-hidden="true"></i>
+										</li>
+										<li class="layover-city text-center">
+											{{segment.city}}
+										</li>
+										<li class="layover-airport text-center">
+											{{segment.airport.IATA}}
+										</li>	
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="flight-endpoint column small-12 medium-12 large-2">
+							<div class="row">
+								<h4 class="column medium-12">Arrive</h4>
+							</div>
+							<div class="flight-endpoint-details row align-middle">
+								<div class="flight-endpoint-icon column medium-3 large-order-2 text-center">
+									<img ng-src="assets/media/icons/landing-32x32.png" alt="Landing Airport" />
+								</div>	
+								<ul class="column medium-9 large-order-1">
+									<li class="flight-date text-right">{{formatDate(direction.destination.timestamp)}}</li>
+									<li class="flight-time text-right">{{formatTimeOfDay(direction.destination.timestamp)}}</li>
+									<li class="flight-city text-right">{{direction.destination.city}}</li>
+									<li class="flight-airport text-right">{{direction.destination.airport.IATA}}</li>	
+								</ul>	
+							</div>
+							
+						</div>
+					</div>
+					<div class="flight-duration row align-middle">
+						<div class="column medium-12 text-center">
+							<p><strong>Total Time:</strong> {{formatMinutesElapsed(direction.duration_total)}} <strong>Stops:</strong> {{direction.layovers}}</p>
+						</div>
+					</div>
+					<div class="flight-details-visibility row align-middle">
+						<div class="column medium-12 text-center">
+							<span slide-toggle="#flight-{{$parent.$index}}-{{$index}}" ng-click="showFlightDetails = !showFlightDetails">{{flightDetailsVisibility}}</span>
+						</div>
+					</div>
+					<div id="flight-{{$parent.$index}}-{{$index}}" class="slideable flight-leg-details row align-middle" duration="0.25s">
+						<div class="column medium-12">
+							<ul class="flight-leg-info">
+								<li ng-repeat="segment in direction.segments">
+									<div ng-switch="segment.type">
+										<div class="flight-segment row align-middle" ng-switch-when="flight">
+											<div class="column small-1 medium-1">
+												<img ng-src="{{segment.airline.logo}}" alt="{{segment.airline.name}}" />
+											</div>
+											<ul class="column small-3 medium-3">
+												<li class="segment-time-span text-left">{{formatTimeOfDay(segment.departure_time)}} - {{formatTimeOfDay(segment.arrival_time)}}</li>
+												<li class="segment-duration text-left">{{formatSecondsElapsed(segment.duration)}}</li>
+												<li class="segment-airline text-left"><strong>Airline:</strong> {{segment.airline.name}}</li>
+												<li class="segment-flight-num text-left"><strong>Flight No:</strong> {{segment.flight_no}} </li>	
+											</ul>
+											<ul class="column small-4 medium-4">
+												<li class="flight-endpoint-label"><h4>Depart</h4></li>
+												<li class="flight-date text-left">{{formatDate(segment.departure_time)}}</li>
+												<li class="flight-time text-left">{{formatTimeOfDay(segment.departure_time)}}</li>
+												<li class="flight-city text-left">{{segment.origin.city}}</li>
+												<li class="flight-airport text-left">{{segment.origin.airport.IATA}}</li>
+											</ul>
+											<ul class="column small-4 medium-4">
+												<li class="flight-endpoint-label"><h4>Arrive</h4></li>
+												<li class="flight-date text-left">{{formatDate(segment.arrival_time)}}</li>
+												<li class="flight-time text-left">{{formatTimeOfDay(segment.arrival_time)}}</li>
+												<li class="flight-city text-left">{{segment.destination.city}}</li>
+												<li class="flight-airport text-left">{{segment.destination.airport.IATA}}</li>
+											</ul>
+										</div>
+										<div class="layover-segment row align-middle" ng-switch-when="layover">
+											<div class="column medium-1">
+												<i class="fa fa-clock-o fa-2x" aria-hidden="true"></i>
+											</div>
+											<ul class="column medium-11">
+												<li class="layover-time text-left">
+													{{formatSecondsElapsed(segment.duration)}} Layover
+												</li>
+												<li class="layover-city text-left">
+													{{segment.city}}
+												</li>
+												<li class="layover-airport text-left">
+													{{segment.airport.IATA}}
+												</li>	
+											</ul>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>	
+			</div>	
+			<div class="flight-pricing column small-12 medium-2">
+				<div class="row align-middle">
+					<ul class="column">
+						<li class="flight-price text-center">${{flight.price}}</li>
+						<li class="flight-type text-center"></li>
+					</ul>
+				</div>
+				<div class="row align-middle">
+					<div class="flight-booking column row text-center">
+						<a ng-href="{{flight.link}}" target="_blank">Book</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>
+<spinner name="flightsListSpinner" class="loading-spinner" img-src="assets/media/images/flyingBye-textmark-spinner.gif"></spinner>

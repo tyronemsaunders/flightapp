@@ -11,5 +11,6 @@ angular
 		'ui.router',
 		'ui.select',
 		'rzModule',
-		'angularSpinners'
+		'angularSpinners',
+		'angularSlideables'
 ]);

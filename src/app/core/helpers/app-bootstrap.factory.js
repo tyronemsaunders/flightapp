@@ -2,19 +2,32 @@ angular
 	.module('flyingBye.core')
 	.factory('appBootstrapFactory', appBootstrapFactory);
 
-appBootstrapFactory.$inject = [];
+appBootstrapFactory.$inject = ['$rootScope', '$timeout'];
 
-function appBootstrapFactory() {
+function appBootstrapFactory($rootScope, $timeout) {
 	var app = {};
-	app.userLocation;
-	app.flights;
-	app.map;
 	app.mapReady = false;
+	app.bootstrapped = false;
 	
-	app.setMapStatus;
+	app.setMapStatus = setMapStatus;
+	app.setUserLocation = setUserLocation;
+	app.broadcastFlightBootstrapping = broadcastFlightBootstrapping;
 	
 	function setMapStatus(val) {
 		app.mapReady = val;
+		$rootScope.$broadcast('mapBootstrapped', val);
+	}
+	
+	function setUserLocation(location) {
+		$timeout(function() {
+			$rootScope.$broadcast('userLocationFound', location);
+		});
+	}
+	
+	function broadcastFlightBootstrapping(val) {
+		$timeout(function() {
+			$rootScope.$broadcast('flightsBootstrapped', val);
+		});
 	}
 	
 	return app;

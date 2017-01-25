@@ -1,3 +1,245 @@
-.results-list-container {
-  margin: 0;
+.flight-results-container, .flights-search-list {
+  position: relative;
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+  }
+  
+  .flights-list-empty {
+    h2 {
+      margin: 3rem auto;
+      text-align: center;
+      font-family: Montserrat, sans-serif;
+      font-weight: 400;
+      font-size: 2rem;
+      letter-spacing: .02rem;
+      color: $active-black;
+    }
+  }
+  
+  .flights-list { 
+    >li {
+      margin-bottom: .5rem;
+      background: white;
+      padding: .5rem;
+    }
+  }
+  
+  .flight-info {
+    >div.flight-direction {
+      border-bottom: solid 1px $gold;
+    }
+    >div.flight-direction:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .flight-direction-title {
+    h3 {
+      margin-bottom: .75rem;
+      color: $active-black;
+      text-align: center;
+      font-family: Montserrat, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: .02rem;
+    }
+  }
+  
+  .flight-endpoint {
+    font-size: .70rem;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    .flight-endpoint-details {
+      >div, ul {
+        padding-right: 0;
+        padding-left: .75rem;
+      }
+    }
+    
+    .flight-date, .flight-city {
+      color: $active-black;
+      font-size: .75rem;
+      /* Medium and below */
+      @media screen and (max-width: 63.9375em) {
+        text-align: left !important;
+      }
+    }
+    .flight-time, .flight-airport {
+      color: $secondary-gray;
+      /* Medium and below */
+      @media screen and (max-width: 63.9375em) {
+        text-align: left !important;
+      }
+    }
+    
+    h4 {
+      font-size: .80rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+  
+  .flight-segment {
+    .segment-time-span, .segment-duration, .segment-airline, .segment-flight-num {
+      font-size: .65rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      color: $secondary-gray;
+    }
+  }
+  
+  .layover-segment {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    .layover-time, .layover-airport, .layover-city {
+      font-size: .65rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      color: $secondary-gray;
+    }
+  }
+  
+  .flight-leg-details {
+    font-size: .70rem;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    
+    img {
+      display: inline-block;
+    }
+    
+    .flight-segment, .layover-segment {
+      >div {
+        text-align: center;
+        padding-right: 0rem;
+        padding-left: .5rem;
+      }
+    }
+    
+    ul.flight-leg-info {
+      >li {
+        padding-bottom: .5rem;
+        padding-left: .5rem;
+        padding-right: .5rem;
+      }
+    }
+    
+    .flight-endpoint-label {
+      h4 {
+        font-size: .80rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: .5rem;  
+      }
+    }
+    
+    .flight-date, .flight-city {
+      color: $active-black;
+      font-size: .75rem;
+    }
+    
+    .flight-time, .flight-airport {
+      color: $secondary-gray;      
+    }
+  
+    .flight-segment {
+      .segment-time-span, .segment-duration, .segment-airline, .segment-flight-num {
+        font-size: .65rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        color: $secondary-gray;
+      }
+    }
+  }
+  
+  .flight-duration {
+    font-size: .75rem;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    color: $active-black;
+    text-align: center;
+  }
+  
+  .flight-details-visibility {
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      padding-bottom: .5rem;
+      span {
+        color: $active-black;
+        text-transform: none;
+        cursor: pointer;
+      }
+      span:link {
+        color: $active-black;
+        text-transform: none;
+        cursor: pointer;
+      }
+      span:visited {
+        color: $active-black;
+        text-transform: none;
+        cursor: pointer;
+      }
+      span:active {
+        color: $gold;
+        text-transform: none;
+        cursor: pointer;
+      }
+      span:hover {
+        color: $gold;
+        text-transform: none;
+        cursor: pointer;
+      }
+  }
+  
+  .flight-pricing {
+    .flight-price {
+      color: $active-black;
+      text-align: center;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .flight-type {
+      font-size: .75rem;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      color: $secondary-gray;
+      text-align: center;
+    }
+  }
+  
+  .flight-booking {
+    a {
+        color: $gold;
+        font-size: 1rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        background-color: transparent;
+        border: 1px solid $gold;
+        text-transform: uppercase;
+        margin: 0 auto;
+        padding: 1rem .85rem 1rem .85rem;
+      }
+      a:link {
+        color: $gold;
+        background-color: transparent;
+      }
+      a:visited {
+        color: $gold;
+        background-color: transparent;
+      }
+      a:active {
+        color: white;
+        background-color: $gold;
+      }
+      a:hover {
+        color: white;
+        background-color: $gold;
+      }
+  }
 }
