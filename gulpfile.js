@@ -354,7 +354,7 @@ gulp.task('index:build', ['build-js', 'build-styles'], function() {
 	return stream;
 });
 
-gulp.task('index:production', ['compile-js', 'compile-styles'], function() {	
+gulp.task('index:production', ['index:build', 'compile-js', 'compile-styles'], function() {	
 	var scriptsArray = glob.sync(config.dest.prod.js + '/*.js') || [];
 		scriptsArray = fixPathArray(scriptsArray);
 		

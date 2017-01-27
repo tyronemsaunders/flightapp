@@ -1,5 +1,5 @@
 {
-  "name": "flightApp",
+  "name": "flightapp",
   "description": "Dependencies for flightApp",
   "main": "app.js",
   "authors": [
@@ -27,7 +27,6 @@
     "motion-ui": "^1.2.2"
   },
   "dependencies": {
-    "angular-material": "^1.1.1",
     "angular-aria": "^1.6.0",
     "angular-messages": "^1.6.0",
     "leaflet": "^1.0.2",
@@ -35,8 +34,6 @@
     "moment": "^2.17.1",
     "angular-ui-select": "^0.19.6",
     "angular-sanitize": "^1.6.0",
-    "Peel.js": "https://github.com/andrewplummer/Peel.js.git",
-    "gsap": "greensock-js#^1.10.2",
     "angularjs-slider": "^6.0.0",
     "Leaflet.Snap": "https://github.com/makinacorpus/Leaflet.Snap.git#^0.4.0",
     "Leaflet.GeometryUtil": "https://github.com/makinacorpus/Leaflet.GeometryUtil.git#^0.4.0",
@@ -46,6 +43,6 @@
     "AngularSlideables": "https://github.com/EricWVGG/AngularSlideables.git"
   },
   "resolutions": {
-    "angular": "1.6.0"
+    "angular": "1.6.1"
   }
 }
